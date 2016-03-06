@@ -1,0 +1,32 @@
+<template name="bigscreen">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-12 col-sm-10">
+        <div class="row">
+          <div class="screen col-xs-12">
+
+            <video class="embed-responsive-item"  id="video" src={{vidSrc}} controls>
+              <!--source src="" type="" /-->
+            </video>
+
+              {{vid}}
+
+          </div>
+
+          <div class="col-xs-12">
+            <button class=" btn btn-primary js-play">Play</button>
+            <button class="btn btn-warning js-pause">Pause</button>
+            <button class="btn btn-default js-sync">Sync</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-sm-2">
+        <h2>Viewers: {{viewers}}</h2>
+        {{> cabinet}}
+      </div>
+
+    </div> <!--end row-->
+  </div> <!--end container-->
+
+</template>

@@ -28,4 +28,3 @@ accounts-ui-unstyled
 accounts-password
 cfs:filesystem
 cfs:standard-packages
-insecure
