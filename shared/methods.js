@@ -28,5 +28,11 @@ Meteor.methods({
     if(vid){
       Screen.update({ _id: vid._id }, {$set: {time:t}});
     }
+  },
+  'vidToPlay':function(vidId){
+    var screen = Screen.findOne();
+    if(screen){
+      Screen.update({_id: screen._id}, {$set:{currentlyPlaying:vidId}});
+    }
   }
 });

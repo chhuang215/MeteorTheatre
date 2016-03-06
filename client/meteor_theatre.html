@@ -13,9 +13,11 @@
     <div class="row">
       <div class="col-xs-12 col-sm-10">
         <div class="screen">
-          <video id="video" controls>
+
+          <video id="video" src={{vidSrc}} controls>
             <!--source src="" type="" /-->
           </video>
+
           {{vid}}
         </div>
 
@@ -33,13 +35,28 @@
           <input class="btn btn-success" type="file" name="vid" accept="video/*">
           <input class="btn btn-default" type="submit">
         </form>
+        <div class="list-group">
+          {{#each getVids}}
+
+          <a href="#" class="list-group-item js-load-vid" style="color:black;">
+          {{#unless this.isUploaded}}
+            <h4 class="list-group-item-heading"><span class="label label-Info">UPLOADING...</span></h4>
+            <h5 class="list-group-item-heading">{{this.name}}</h5>
+          {{/unless}}
+
+            <h4 class="list-group-item-heading">{{this.name}}</h4>
+
+          </a>
+          <div class="list-group-item ">
+            <div class="list-group-item-text">
+              <button class="btn btn-danger btn-xs js-remove-vid"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
+          </div>
+          {{/each}}
+        </div>
       </div>
 
     </div> <!--end row-->
   </div> <!--end container-->
 
-</template>
-
-<template name="admin">
-  {{> loginButtons}}
 </template>

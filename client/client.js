@@ -40,23 +40,39 @@ Template.bigscreen.helpers({
     }
     return -1;
   },
-
+  "getVids": function(){
+    var vids = Videos.find();
+    if(vids){
+      return vids;
+    }
+  },
+  "vidSrc":function(){
+    Meteor.subscribe("screen");
+    var s = Screen.findOne();
+    if(s){
+        var vid = Videos.findOne({_id:s.currentlyPlaying});
+        if(vid){
+          return vid.url();
+        }
+    }
+    return "";
+  },
   "vid": function () {
     Meteor.subscribe("screen");
     Session.get('playing');
     var t = Template.instance();
     if (t.view.isRendered) {
-      var vid = Screen.findOne();
+      var vidScreen = Screen.findOne();
 
-      if(vid){
-        var time = vid.time;
+      if(vidScreen){
+        var time = vidScreen.time;
         myvideo = $("#video");
 
         if(myvideo[0].currentTime+4 < time || myvideo[0].currentTime-4 >time ){
             myvideo[0].currentTime = time;
         }
 
-        if(vid.playing == true){
+        if(vidScreen.playing == true){
           myvideo[0].play();
 
         }else{
@@ -68,7 +84,6 @@ Template.bigscreen.helpers({
 
 });
 
-
 Template.bigscreen.events({
 
   "submit .js-add-vid":function(e){
@@ -77,8 +92,25 @@ Template.bigscreen.events({
     for (var i = 0, ln = files.length; i < ln; i++) {
       Videos.insert(files[0], function (err, fileObj) {
         // Inserted new doc with ID fileObj._id, and kicked off the data upload using HTTP
+        console.log(fileObj);
       })
     }
+  },
+  "click .js-load-vid":function(e){
+    Meteor.call('time', 0);
+    Meteor.call('play', false);
+    Session.set('time', 0);
+    Session.set('playing', 0);
+    Meteor.call('vidToPlay', this._id);
+  },
+  "click .js-remove-vid":function(){
+    var v = Videos.findOne({_id:this._id});
+    if(v){
+      //  console.log('Remove this vid ');
+        //console.log(v);
+        Videos.remove({_id:v._id});
+    }
+
   },
   "timeupdate video":function(){
 
@@ -124,10 +156,9 @@ Template.bigscreen.onRendered(function() {
   Meteor.subscribe("screen");
 
   var vid = Screen.findOne();
-  $('#video').attr("src", "videos/01.mp4");
-  //$('#video > source').attr("type", "video/mp4");
-  if(vid){
 
+  if(vid){
+    //$('#video').attr("src", "videos/01.mp4");
     Session.set("play", vid.playing);
     Session.set("time", vid.time);
     $('#video')[0].currentTime = vid.time;

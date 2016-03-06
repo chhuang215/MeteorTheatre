@@ -1,7 +1,6 @@
 /* CSS declarations go here */
 body {
   font-family: sans-serif;
-  /*background-image: 'seats.jpg';*/
   color:white;
   background-image: linear-gradient(to bottom, #000000, #323232 100%);
 
