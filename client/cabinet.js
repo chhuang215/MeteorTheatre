@@ -30,21 +30,18 @@ Template.cabinet.events({
   },
   "click .js-remove-vid":function(){
     var v = Videos.findOne({_id:this._id});
+    var s = Screen.findOne();
     if(v){
         var c = confirm('are you sure you want to delete?');
         if(c === true){
+          if(s.currentlyPlaying == v._id){
+            Meteor.call('vidToPlay', "");
+            Meteor.call('time', 0);
+            Meteor.call('play', false);
+            Session.set('time', 0);
+            Session.set('playing', 0);
+          }
           v.remove();
-          // Videos.remove({_id:v._id}, function(err,result){
-          //   if (err){
-          //     console.log(err);
-          //   }else{
-          //     Meteor.call('time', 0);
-          //     Meteor.call('play', false);
-          //     Session.set('time', 0);
-          //     Session.set('playing', 0);
-          //     //console.log(result);
-          //   }
-          // });
         }
     }
 

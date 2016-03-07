@@ -11,62 +11,57 @@ Template.bigscreen.helpers({
     }
     return -1;
   },
+  "getCurrentVid": function () {
 
-  "vidSrc":function(){
-
-    var s = Screen.findOne();
-    if(s){
-        var vid = Videos.findOne({_id:s.currentlyPlaying});
-        if(vid){
-          return vid.url();
-        }
-    }
-    return "";
-  },
-  "vid": function () {
-
-    Session.get('playing');
-    Session.get('time');
-    var t = Template.instance();
+    // Session.get('playing');
+    // Session.get('time');
     var vidScreen = Screen.findOne();
-    if (t.view.isRendered) {
+    if (vidScreen) {
 
-      if(vidScreen){
-        var time = vidScreen.time;
-        myvideo = $("#video")[0];
-        if(myvideo){
-          if(myvideo.currentTime+4 < time || myvideo.currentTime-4 >time ){
-              myvideo.currentTime = time;
-          }
+      var currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying});
+      var time = vidScreen.time;
+      myvideo = $("#video")[0];
+      if(myvideo){
+        if(myvideo.currentTime+3.5 < time || myvideo.currentTime-3.5 >time ){
+            myvideo.currentTime = time;
+        }
 
-          if(vidScreen.playing == true){
-            myvideo.play();
-          }
-          else{
-            myvideo.pause();
-          }
-        } // End if
+        if(vidScreen.playing == true){
+          myvideo.play();
+        }
+        else{
+          myvideo.pause();
+        }
       } // End if
+      if(currentVid){
+        return currentVid;
+      }
     } // End if
+
+    return {};
   }
 
 });
 
 Template.bigscreen.events({
-  "timeupdate video":function(){
+  "timeupdate #video":function(){
+    var vidScreen = Screen.findOne();
+    if(vidScreen && vidScreen.playing){
 
-    var time = $('#video')[0].currentTime;
+      var time = $('#video')[0].currentTime;
 
-    Session.set('time', time);
+      Session.set('time', time);
 
-    Meteor.call('time', time);
+      Meteor.call('time', time);
+    }
+
   },
   "click .js-play": function(){
     Session.set('playing', 1);
 
     Meteor.call("play", true);
   },
-  "play video":  function(){
+  "play #video":  function(){
     Session.set('playing', 1);
 
     Meteor.call("play", true);
@@ -76,7 +71,7 @@ Template.bigscreen.events({
 
     Meteor.call("play", false);
   },
-  "pause video":function(){
+  "pause #video":function(){
     Session.set('playing', 0);
 
     Meteor.call("play", false);
@@ -95,14 +90,14 @@ Template.bigscreen.onCreated(function(){
 
 Template.bigscreen.onRendered(function() {
 
-  var vid = Screen.findOne();
-
-  if(vid){
-    //$('#video').attr("src", "videos/01.mp4");
-    Session.set("play", vid.playing);
-    Session.set("time", vid.time);
-    //$('#video')[0].currentTime = vid.time;
-  }
+  // var vid = Screen.findOne();
+  //
+  // if(vid){
+  //   //$('#video').attr("src", "videos/01.mp4");
+  //   Session.set("play", vid.playing);
+  //   Session.set("time", vid.time);
+  //   //$('#video')[0].currentTime = vid.time;
+  // }
 
   $('.screen').css('height', $(window).height()-80);
 });
