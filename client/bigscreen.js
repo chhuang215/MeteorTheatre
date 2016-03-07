@@ -46,9 +46,10 @@ Template.bigscreen.helpers({
 Template.bigscreen.events({
   "timeupdate #video":function(){
     var vidScreen = Screen.findOne();
-    if(vidScreen && vidScreen.playing){
+    var myvid = $('#video')[0];
+    if(!myvid.seeking && vidScreen && vidScreen.playing){
 
-      var time = $('#video')[0].currentTime;
+      var time = myvid.currentTime;
 
       Session.set('time', time);
 
@@ -56,14 +57,14 @@ Template.bigscreen.events({
     }
 
   },
-  "seeking #video":function(){
-    var vidScreen = Screen.findOne();
-    if(vidScreen){
-      Session.set('playing', 0);
-      Meteor.call("play", false);
-    }
-
-  },
+  // "seeking #video":function(){
+  //   var vidScreen = Screen.findOne();
+  //   if(vidScreen){
+  //     Session.set('playing', 0);
+  //     Meteor.call("play", false);
+  //   }
+  //
+  // },
   "seeked #video":function(){
     var vidScreen = Screen.findOne();
     if(vidScreen){
