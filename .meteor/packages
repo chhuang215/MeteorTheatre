@@ -27,3 +27,4 @@ check
 accounts-password
 cfs:filesystem
 cfs:standard-packages
+cfs:ui

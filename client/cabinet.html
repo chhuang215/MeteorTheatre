@@ -5,21 +5,18 @@
   </label>
   <div class="list-group">
     {{#each getVids}}
-
-    <a href="#" class="list-group-item js-load-vid" style="color:black;">
-    {{#unless this.isUploaded}}
-      <h4 class="list-group-item-heading"><span class="label label-info">UPLOADING...</span></h4>
-      <h5 class="list-group-item-heading">{{this.name}}</h5>
-
-      {{else}}
-      <p class="list-group-item-heading">{{this.name}}</p>
-      {{/unless}}
-    </a>
     <div class="list-group-item ">
       <div class="list-group-item-text">
         <button class="btn btn-danger btn-xs js-remove-vid"><span class="glyphicon glyphicon-remove"></span></button>
       </div>
     </div>
+    <a href="#" class="list-group-item js-load-vid" style="color:black;">
+    {{#unless this.isUploaded}}
+      <h4 class="list-group-item-heading"><span class="label label-warning">UPLOADING...</span></h4>
+      {{> FS.UploadProgressBar bootstrap=true class='progress-bar-info progress-bar-striped active' showPercent=true}}
+    {{/unless}}
+      <h5 class="list-group-item-heading">{{this.name}}</h5>
+    </a>
     {{/each}}
   </div>
 </template>

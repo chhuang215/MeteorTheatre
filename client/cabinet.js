@@ -31,21 +31,20 @@ Template.cabinet.events({
   "click .js-remove-vid":function(){
     var v = Videos.findOne({_id:this._id});
     if(v){
-      //  console.log('Remove this vid ');
-        //console.log(v);
-        var mensaje = confirm('are you sure you want to delete?');
-        if(mensaje === true){
-        Videos.remove({_id:v._id}, function(err,result){
-          if (err){
-            console.log(err);
-          }else{
-            Meteor.call('time', 0);
-            Meteor.call('play', false);
-            Session.set('time', 0);
-            Session.set('playing', 0);
-            //console.log(result);
-          }
-        });
+        var c = confirm('are you sure you want to delete?');
+        if(c === true){
+          v.remove();
+          // Videos.remove({_id:v._id}, function(err,result){
+          //   if (err){
+          //     console.log(err);
+          //   }else{
+          //     Meteor.call('time', 0);
+          //     Meteor.call('play', false);
+          //     Session.set('time', 0);
+          //     Session.set('playing', 0);
+          //     //console.log(result);
+          //   }
+          // });
         }
     }
 
