@@ -1,7 +1,7 @@
 
 //Films.remove({});
 if (Screen.find().count() === 0) {
-  Screen.insert({playing:false, volume:50, time:0,viewerCount:0, currentlyPlaying:null});
+  Screen.insert({playing:false, volume:50, time:0, viewerCount:0, currentlyPlaying:null, isPublic:true, owner:null});
 }
 
 Videos.allow({

@@ -15,8 +15,17 @@ Router.configure({
     layoutTemplate: 'Layout'
 });
 
-Router.route('/',function(){
+Router.route('/:_id',function(){
   this.render('bigscreen',{
+    to:'main',
+    data:function(){
+        return Screen.findOne({_id:this.params._id});
+    }
+  });
+});
+
+Router.route('/',function(){
+  this.render('auditoriums',{
     to:'main'
   });
 });

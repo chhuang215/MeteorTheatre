@@ -34,5 +34,9 @@ Meteor.methods({
     if(screen){
       Screen.update({_id: screen._id}, {$set:{currentlyPlaying:vidId}});
     }
+  },
+  'addNewScreen':function(ownerId){
+    Screen.insert({playing:false, volume:50, time:0, viewerCount:0, currentlyPlaying:null, isPublic:false, owner:ownerId});
   }
+
 });

@@ -1,0 +1,22 @@
+<template name="auditoriums">
+  <div class="container">
+
+    <button class="btn btn-default">Create new Auditorium</button>
+    <div class="row">
+      {{#each getScreens}}
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <h3>{{@index}}{{this._id}}</h3>
+          </div>
+          <div class="panel-body">
+            <a class="btn btn-info" href="/{{this._id}}">Go to this Aud</a>
+          </div>
+        </div>
+
+      </div>
+      {{/each}}
+    </div>
+
+  </div>
+</template>
