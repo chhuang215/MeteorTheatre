@@ -56,6 +56,23 @@ Template.bigscreen.events({
     }
 
   },
+  "seeking #video":function(){
+    var vidScreen = Screen.findOne();
+    if(vidScreen){
+      Session.set('playing', 0);
+      Meteor.call("play", false);
+    }
+
+  },
+  "seeked #video":function(){
+    var vidScreen = Screen.findOne();
+    if(vidScreen){
+      var time = $('#video')[0].currentTime;
+      Session.set('time', time);
+      Meteor.call('time', time);
+    }
+
+  },
   "click .js-play": function(){
     Session.set('playing', 1);
 
