@@ -1,21 +1,32 @@
 <template name="auditoriums">
-  <div class="container">
+  <div class="container" style="margin-top:20px;">
 
-    <button class="btn btn-default">Create new Auditorium</button>
-    <div class="row">
+
+    <div class="row row-eq-height">
       {{#each getScreens}}
-      <div class="col-xs-6 col-sm-4 col-md-3">
+      <div class="col-xs-12 col-sm-6 col-md-3">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3>{{@index}}{{this._id}}</h3>
+            <h3>[{{@index}}]{{this._id}}</h3>
           </div>
           <div class="panel-body">
-            <a class="btn btn-info" href="/{{this._id}}">Go to this Aud</a>
+            <div class="row">
+              <div class="col-xs-8">
+                  <a class="btn btn-success" href="/{{this._id}}"><i class="fa fa-sign-in fa-2x"></i> Enter</a>
+              </div>
+              <div class="col-xs-4">
+                  <button class="btn btn-xs btn-danger js-delete-aud">Delete</button>
+              </div>
+            </div>
           </div>
         </div>
 
       </div>
       {{/each}}
+      <div class="col-xs-6 col-sm-4 col-md-3">
+        <button class="btn btn-default js-create-aud btn-lg">Create new Auditorium</button>
+
+      </div>
     </div>
 
   </div>

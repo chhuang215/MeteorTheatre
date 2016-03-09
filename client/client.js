@@ -2,7 +2,7 @@
 Meteor.startup(function(){
   $(window).bind('beforeunload', function() {
 
-      Meteor.call("decViewer");
+      Meteor.call("decViewer", Template.currentData()._id);
        closingWindow();
        // have to return null, unless you want a chrome popup alert
        return null;

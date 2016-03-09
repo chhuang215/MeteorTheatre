@@ -27,7 +27,15 @@ body {
   width:95%;
 }
 
+.row-eq-height {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .screen{
+  border-radius: 25px;
   padding:25px;
   background: rgba(255, 255, 255, 0.1);
 }

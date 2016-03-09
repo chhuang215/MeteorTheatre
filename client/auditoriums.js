@@ -8,3 +8,12 @@ Template.auditoriums.helpers({
     }
   }
 });
+
+Template.auditoriums.events({
+  "click .js-create-aud": function(){
+    Meteor.call("addNewScreen");
+  },
+  "click .js-delete-aud":function(){
+    Meteor.call("removeScreen", this._id);
+  }
+});

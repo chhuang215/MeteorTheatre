@@ -5,7 +5,7 @@ Template.bigscreen.helpers({
 
   "viewers": function(){
 
-    var vid = Screen.findOne();
+    var vid = Screen.findOne({_id:this._id});
     if(vid){
       return vid.viewerCount;
     }
@@ -15,7 +15,7 @@ Template.bigscreen.helpers({
 
     // Session.get('playing');
     // Session.get('time');
-    var vidScreen = Screen.findOne();
+    var vidScreen = Screen.findOne({_id:this._id});
     if (vidScreen) {
 
       var currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying});
@@ -45,7 +45,8 @@ Template.bigscreen.helpers({
 
 Template.bigscreen.events({
   "timeupdate #video":function(){
-    var vidScreen = Screen.findOne();
+    var screenId = Template.currentData()._id;
+    var vidScreen = Screen.findOne({_id:screenId});
     var myvid = $('#video')[0];
     if(!myvid.seeking && vidScreen && vidScreen.playing){
 
@@ -53,7 +54,7 @@ Template.bigscreen.events({
 
       Session.set('time', time);
 
-      Meteor.call('time', time);
+      Meteor.call('time', screenId, time);
     }
 
   },
@@ -66,44 +67,61 @@ Template.bigscreen.events({
   //
   // },
   "seeked #video":function(){
-    var vidScreen = Screen.findOne();
+    var screenId = Template.currentData()._id;
+    var vidScreen = Screen.findOne({_id:screenId});
     if(vidScreen){
       var time = $('#video')[0].currentTime;
       Session.set('time', time);
-      Meteor.call('time', time);
+      Meteor.call('time', screenId, time);
     }
 
   },
   "click .js-play": function(){
     Session.set('playing', 1);
-
-    Meteor.call("play", true);
+    var screenId = Template.currentData()._id;
+    Meteor.call("play", screenId,true);
   },
   "play #video":  function(){
     Session.set('playing', 1);
-
-    Meteor.call("play", true);
+    var screenId = Template.currentData()._id;
+    Meteor.call("play", screenId, true);
   },
   "click .js-pause":function(){
     Session.set('playing', 0);
-
-    Meteor.call("play", false);
+    var screenId = Template.currentData()._id;
+    Meteor.call("play", screenId,false);
   },
   "pause #video":function(){
     Session.set('playing', 0);
-
-    Meteor.call("play", false);
+    var screenId = Template.currentData()._id;
+    Meteor.call("play", screenId,false);
   },
   "click .js-sync":function(e){
 
+  },
+  "mouseup .js-leave-aud":function(){
+    var screenId = Template.currentData()._id;
+    Meteor.call("decViewer", screenId);
   }
 });
 
 Template.bigscreen.onCreated(function(){
+
+  $(window).bind('beforeunload', function() {
+
+      Meteor.call("decViewer", Template.currentData()._id);
+       closingWindow();
+       // have to return null, unless you want a chrome popup alert
+       return null;
+
+       //return 'Are you sure you want to leave your Vonvo?';
+   });
+
   $(window).resize(function() {
     $('.screen').css('height', $(window).height()-80);
   });
-  Meteor.call('incViewer');
+  var screenId = Template.currentData()._id;
+  Meteor.call('incViewer',screenId);
 });
 
 Template.bigscreen.onRendered(function() {
