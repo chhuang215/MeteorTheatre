@@ -106,16 +106,16 @@ Template.bigscreen.onCreated(function(){
   $(window).resize(function() {
     $('.screen').css('height', $(window).height()-80);
   });
-
-});
-
-Template.bigscreen.onRendered(function() {
   $(window).bind('beforeunload', function(e) {
       e.preventDefault();
       closingWindow();
     });
 
-    var screenId = Template.currentData()._id;
+});
+
+Template.bigscreen.onRendered(function() {
+    //console.log(this);
+    var screenId = this.data._id;
     Session.set('sid', screenId);
     Meteor.call('incViewer',screenId);
   // var vid = Screen.findOne();
