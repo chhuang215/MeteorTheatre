@@ -115,9 +115,12 @@ Template.bigscreen.onCreated(function(){
 
 Template.bigscreen.onRendered(function() {
     //console.log(this);
-    var screenId = this.data._id;
-    Session.set('sid', screenId);
-    Meteor.call('incViewer',screenId);
+    if(this.data){
+      var screenId = this.data._id;
+      Session.set('sid', screenId);
+      Meteor.call('incViewer',screenId);
+    }
+
   // var vid = Screen.findOne();
   //
   // if(vid){
