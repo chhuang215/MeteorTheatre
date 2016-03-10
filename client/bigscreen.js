@@ -98,34 +98,26 @@ Template.bigscreen.events({
   },
   "click .js-sync":function(e){
 
-  },
-  "mouseup .js-leave-aud":function(){
-    var screenId = Template.currentData()._id;
-    Meteor.call("decViewer", screenId);
   }
 });
 
 Template.bigscreen.onCreated(function(){
 
-  $(window).bind('beforeunload', function() {
-
-      Meteor.call("decViewer", Template.currentData()._id);
-       closingWindow();
-       // have to return null, unless you want a chrome popup alert
-       return null;
-
-       //return 'Are you sure you want to leave your Vonvo?';
-   });
-
   $(window).resize(function() {
     $('.screen').css('height', $(window).height()-80);
   });
-  var screenId = Template.currentData()._id;
-  Meteor.call('incViewer',screenId);
+
 });
 
 Template.bigscreen.onRendered(function() {
+  $(window).bind('beforeunload', function(e) {
+      e.preventDefault();
+      closingWindow();
+    });
 
+    var screenId = Template.currentData()._id;
+    Session.set('sid', screenId);
+    Meteor.call('incViewer',screenId);
   // var vid = Screen.findOne();
   //
   // if(vid){
@@ -137,3 +129,12 @@ Template.bigscreen.onRendered(function() {
 
   $('.screen').css('height', $(window).height()-80);
 });
+
+Template.bigscreen.onDestroyed(function () {
+  Meteor.call('decViewer', Template.currentData()._id);
+  $(window).unbind();
+  Session.set('sid', "");
+});
+closingWindow = function(){
+  Meteor.call('decViewer', Session.get('sid'));
+}

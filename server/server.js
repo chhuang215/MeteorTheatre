@@ -9,7 +9,8 @@ if (Screen.find().count() === 0) {
     viewerCount:0,
     currentlyPlaying:null,
     isPublic:true,
-    owner:null});
+    owner:null,
+  });
 }
 
 Videos.allow({

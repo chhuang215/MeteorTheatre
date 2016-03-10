@@ -45,7 +45,7 @@ Meteor.methods({
     );
   },
   "removeScreen":function(screenId){
-    console.log("I dont think it is correct: " + screenId);
+
     Screen.remove({_id:screenId});
   }
 

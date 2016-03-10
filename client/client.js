@@ -1,14 +1,18 @@
 
 Meteor.startup(function(){
-  $(window).bind('beforeunload', function() {
 
-      Meteor.call("decViewer", Template.currentData()._id);
-       closingWindow();
-       // have to return null, unless you want a chrome popup alert
-       return null;
-
-       //return 'Are you sure you want to leave your Vonvo?';
-   });
+  // $(window).bind('beforeunload', function(e) {
+  //     e.preventDefault();
+  //     console.log(Template.currentData());
+  // //    Meteor.call("decViewer", Template.currentData()._id);
+  // //    alert("TEST: " + Template.currentData()._id);
+  // //     closingWindow();
+  //      // have to return null, unless you want a chrome popup alert
+  //      return null;
+  //
+  //      //return 'Are you sure you want to leave your Vonvo?';
+  //  });
+   orion.links.add({index:2,identifier:"test",title:"test"});
 });
 
 Router.configure({
@@ -29,9 +33,3 @@ Router.route('/',function(){
     to:'main'
   });
 });
-
-// Router.route('/admin',function(){
-//   this.render('admin',{
-//     to:'main'
-//   });
-// });
