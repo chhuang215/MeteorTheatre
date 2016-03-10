@@ -2,7 +2,13 @@
 Meteor.subscribe("videos");
 Meteor.subscribe("screen");
 Template.bigscreen.helpers({
-
+  "greeting": function(screenId){
+    if(screenId){
+      Session.set('sid', screenId);
+      Meteor.call('incViewer',screenId);
+    }
+    return screenId;
+  },
   "viewers": function(){
 
     var vid = Screen.findOne({_id:this._id});
@@ -115,11 +121,7 @@ Template.bigscreen.onCreated(function(){
 
 Template.bigscreen.onRendered(function() {
     //console.log(this);
-    if(this.data){
-      var screenId = this.data._id;
-      Session.set('sid', screenId);
-      Meteor.call('incViewer',screenId);
-    }
+
 
   // var vid = Screen.findOne();
   //
