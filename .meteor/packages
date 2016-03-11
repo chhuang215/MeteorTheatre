@@ -29,3 +29,5 @@ cfs:filesystem
 cfs:standard-packages
 cfs:ui
 orionjs:core
+artwells:accounts-guest
+mizzao:user-status

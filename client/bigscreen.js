@@ -1,21 +1,26 @@
 
 Meteor.subscribe("videos");
 Meteor.subscribe("screen");
+
 Template.bigscreen.helpers({
   "greeting": function(screenId){
-    if(screenId){
-      Session.set('sid', screenId);
-      Meteor.call('incViewer',screenId);
+    var greet = screenId;
+    if(Meteor.userId()){
+      greet += " , " + Meteor.userId();
     }
-    return screenId;
-  },
-  "viewers": function(){
 
-    var vid = Screen.findOne({_id:this._id});
-    if(vid){
-      return vid.viewerCount;
+    return greet;
+  },
+  'viewers': function(){
+      Meteor.subscribe('getViewers', this._id);
+      return Meteor.users.find({"status.online":true});
+  },
+  'isCurrentUser' : function(){
+
+    if(this._id == Meteor.userId()){
+      return true;
     }
-    return -1;
+    return false;
   },
   "getCurrentVid": function () {
 
@@ -112,11 +117,14 @@ Template.bigscreen.onCreated(function(){
   $(window).resize(function() {
     $('.screen').css('height', $(window).height()-80);
   });
-  $(window).bind('beforeunload', function(e) {
-      e.preventDefault();
-      closingWindow();
-    });
 
+  this.autorun(function(){
+    if(Meteor.userId()){
+      if(Template.currentData()){
+        Meteor.call("thisUserIsIn", Meteor.userId(), Template.currentData()._id);
+      }
+    }
+  });
 });
 
 Template.bigscreen.onRendered(function() {
@@ -134,12 +142,9 @@ Template.bigscreen.onRendered(function() {
 
   $('.screen').css('height', $(window).height()-80);
 });
+Template.bigscreen.onDestroyed(function(){
+  if(Meteor.userId()){
+    Meteor.call("thisUserIsNotIn", Meteor.userId(), this.data._id);
 
-Template.bigscreen.onDestroyed(function () {
-  Meteor.call('decViewer', Template.currentData()._id);
-  $(window).unbind();
-  Session.set('sid', "");
+  }
 });
-closingWindow = function(){
-  Meteor.call('decViewer', Session.get('sid'));
-}

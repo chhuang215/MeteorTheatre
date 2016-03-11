@@ -15,5 +15,20 @@ Template.auditoriums.events({
   },
   "click .js-delete-aud":function(){
     Meteor.call("removeScreen", this._id);
+  },
+  'click .js-enter-aud':function(){
+    if(!Meteor.userId()){
+
+        //AccountsGuest.enabled = true;
+        Meteor.loginVisitor();
+    }
   }
+});
+
+Template.auditoriums.onRendered(function(){
+  // this.autorun(function(){
+  //   if(Meteor.userId()){
+  //     Meteor.call("thisUserIsIn", Meteor.userId(), "");
+  //   }
+  // });
 });

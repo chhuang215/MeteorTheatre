@@ -6,7 +6,6 @@ if (Screen.find().count() === 0) {
     playing:false,
     volume:50,
     time:0,
-    viewerCount:0,
     currentlyPlaying:null,
     isPublic:true,
     owner:null,
@@ -20,4 +19,21 @@ Videos.allow({
   'download':function(){
     return true;
   }
+});
+
+UserStatus.events.on("connectionLogout",function(fields){
+  var uid = fields.userId;
+  var u = Meteor.users.findOne({_id:uid});
+  if(u){
+    u.isIn = [];
+    Meteor.users.update({_id:uid} , {$set: u });
+  }
+})
+
+Meteor.startup(function(){
+  // if(!Meteor.users.findOne()){
+  //     AccountsGuest.enabled = false;
+  // }else{
+  //   AccountsGuest.enabled = true;
+  // }
 });

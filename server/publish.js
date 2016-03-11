@@ -11,3 +11,9 @@ Meteor.publish("videos", function(screenId){
   }
   return [];
 });
+
+Meteor.publish('getViewers', function (screenId){
+
+  var usersViewers =  Meteor.users.find({isIn:screenId});
+  return usersViewers;
+});

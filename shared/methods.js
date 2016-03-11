@@ -38,7 +38,6 @@ Meteor.methods({
       playing:false,
       volume:50,
       time:0,
-      viewerCount:0,
       currentlyPlaying:null,
       isPublic:false,
       owner:ownerId}
@@ -47,6 +46,45 @@ Meteor.methods({
   "removeScreen":function(screenId){
 
     Screen.remove({_id:screenId});
+  },
+
+  "enableGuestLogin":function(){
+    AccountsGuest.enabled = true;
+  },
+  'thisUserIsIn':function(userId,screenId){
+    if(this.userId == userId){
+        var u =  Meteor.users.findOne({_id:userId});
+        if(u.isIn){
+          if(u.isIn.indexOf(screenId) == -1){
+
+            u.isIn.push(screenId);
+
+            Meteor.users.update({_id:userId}, {$set: {isIn:u.isIn}});
+          }
+        }
+        else{
+          Meteor.users.update({_id:userId}, {$set: {isIn:[screenId]}});
+          //u.isIn = ;
+        }
+
+    }
+
+  },
+
+  'thisUserIsNotIn':function(userId,screenId){
+    if(this.userId == userId){
+      var u =  Meteor.users.findOne({_id:userId, isIn:screenId});
+      if(u.isIn){
+        var elem = u.isIn.indexOf(screenId);
+        if(elem != -1){
+          u.isIn.splice(elem,1);
+        }
+      }
+      else{
+        u.isIn = [];
+      }
+      Meteor.users.update({_id:userId}, {$set: {isIn:[]}});
+    }
   }
 
 });
