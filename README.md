@@ -1,1 +1,1 @@
-The website is published at ch-musicmachine.meteor.com.
+This project is published at ch-meteortheatre.meteor.com.
