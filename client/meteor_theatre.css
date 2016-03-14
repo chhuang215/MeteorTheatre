@@ -2,8 +2,8 @@
 body {
   font-family: sans-serif;
   color:white;
-  background-image: linear-gradient(to bottom, #000000, #323232 100%);
-
+  /*background-image: linear-gradient(to bottom, #000000, #323232 100%);*/
+  background-image: -webkit-linear-gradient(bottom #000000, #323232 100%)
   background-attachment: fixed;
 
   position: absolute;
