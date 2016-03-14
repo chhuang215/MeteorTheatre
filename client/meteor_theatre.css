@@ -2,10 +2,10 @@
 body {
   font-family: sans-serif;
   color:white;
-  background-color: #323232;
-  background: linear-gradient(to bottom, #000000, #323232 100%);
+  background-color: #131313;
+  background-image: linear-gradient(to bottom, #000000, #323232 100%);
   /*background-image: -webkit-linear-gradient(bottom #000000, #323232 100%);*/
-  background-attachment: fixed;
+    background-attachment: fixed;
 
   position: absolute;
   top: 0;
