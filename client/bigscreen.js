@@ -24,8 +24,6 @@ Template.bigscreen.helpers({
   },
   "getCurrentVid": function () {
 
-    // Session.get('playing');
-    // Session.get('time');
     var vidScreen = Screen.findOne({_id:this._id});
     if (vidScreen) {
 
@@ -59,15 +57,16 @@ Template.bigscreen.events({
     var screenId = Template.currentData()._id;
     var vidScreen = Screen.findOne({_id:screenId});
     var myvid = $('#video')[0];
-    if(!myvid.seeking && vidScreen && vidScreen.playing){
+    if(myvid.currentTime % 1.0 == 0.0){
+      if(!myvid.seeking && vidScreen && vidScreen.playing){
 
-      var time = myvid.currentTime;
+        var time = myvid.currentTime;
 
-      Session.set('time', time);
+        Session.set('time', time);
 
-      Meteor.call('time', screenId, time);
+        Meteor.call('time', screenId, time);
+      }
     }
-
   },
   // "seeking #video":function(){
   //   var vidScreen = Screen.findOne();
