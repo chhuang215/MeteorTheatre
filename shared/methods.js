@@ -1,16 +1,5 @@
 Meteor.methods({
-  "incViewer":function(screenId){
-    var vid = Screen.findOne({_id:screenId});
-    if(vid){
-      Screen.update({ _id: vid._id }, {$set: {viewerCount:vid.viewerCount+1}});
-    }
-  },
-  "decViewer":function(screenId){
-    var vid = Screen.findOne({_id:screenId});
-    if(vid){
-      Screen.update({ _id: vid._id }, {$set: {viewerCount:vid.viewerCount-1}});
-    }
-  },
+  // Screen Methods
   'play':function(screenId,setPlay){
     var vid = Screen.findOne({_id:screenId});
     if(vid){
@@ -24,19 +13,17 @@ Meteor.methods({
     }
   },
   'vidToPlay':function(vidId){
-    var vid = Videos.findOne({_id:vidId});
-    if(vid){
-      var screen = Screen.findOne({_id:vid.belongToScreen});
-      if(screen){
-        Screen.update({_id: screen._id}, {$set:{currentlyPlaying:vidId}});
-      }
+
+    var screen = Screen.findOne({_id:vid.belongToScreen});
+    if(screen){
+      Screen.update({_id: screen._id}, {$set:{currentlyPlaying:vidId}});
     }
+
   },
   'addNewScreen':function(ownerId=null){
     Screen.insert({
       name:"Private",
       playing:false,
-      volume:50,
       time:0,
       currentlyPlaying:null,
       isPublic:false,
@@ -46,6 +33,18 @@ Meteor.methods({
   "removeScreen":function(screenId){
 
     Screen.remove({_id:screenId});
+  },
+  // End Screen Methods
+
+  "addOnlineVideo":function(screenId, url){
+    OnlineVideos.insert({
+      url:url;
+      belongToScreen:screenId;
+    });
+  },
+
+  "removeOnlineVideo":function(id){
+    OnlineVideos.remove({_id:id});
   },
 
   "enableGuestLogin":function(){

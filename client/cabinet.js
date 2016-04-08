@@ -7,6 +7,13 @@ Template.cabinet.helpers({
       return vids;
     }
   },
+  "getOnlineVids":function(){
+      Meteor.subscribe("onlinevideos", this.screenId);
+      var vids = OnlineVideos.find();
+      if(vids){
+        return vids;
+      }
+  }
 });
 
 Template.cabinet.events({
@@ -20,7 +27,6 @@ Template.cabinet.events({
         if(err){
           alert("Not a video file.");
         }
-        console.log("fO: " + fileObj);
       })
     }
   },
@@ -50,5 +56,11 @@ Template.cabinet.events({
     }
 
   },
+
+  "submit .js-add-onlinevid":function(e){
+    e.preventDefault();
+
+    $('#modalUrlForm').modal("toggle");
+  }
 
 });

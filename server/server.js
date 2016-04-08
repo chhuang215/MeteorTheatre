@@ -4,7 +4,6 @@ if (Screen.find().count() === 0) {
   Screen.insert({
     name:"Public",
     playing:false,
-    volume:50,
     time:0,
     currentlyPlaying:null,
     isPublic:true,

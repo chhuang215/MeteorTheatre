@@ -12,6 +12,16 @@ Meteor.publish("videos", function(screenId){
   return [];
 });
 
+Meteor.publish("onlinevideos", function(screenId){
+  if(screenId){
+    var vids = OnlineVideos.find({belongToScreen:screenId});
+    if(vids){
+      return vids;
+    }
+  }
+  return [];
+});
+
 Meteor.publish('getViewers', function (screenId){
 
   var usersViewers =  Meteor.users.find({isIn:screenId});
