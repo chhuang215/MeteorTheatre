@@ -12,15 +12,11 @@
         <div class="modal-body">
           <form id="addUrlForm" class="js-add-onlinevid">
             <div class="form-group">
-              <label for="videourl" class="control-label">Recipient:</label>
+              <label for="videourl" class="control-label">URL</label>
               <input type="text" class="form-control" id="videourl">
             </div>
             <button type="submit" class="btn btn-primary ">Add</button>
           </form>
-        </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-
         </div>
       </div>
 
@@ -28,14 +24,14 @@
   </div>
 
   <div class="row">
-    <div class="col-xs-12">
+    <div class="col-xs-6">
       <label class="btn btn-info" for="vid-file-select">
         <input id="vid-file-select" type="file" class="js-add-vid" accept="video/*" style="display:none;" >
         Upload
       </label>
     </div>
-    <div class="col-xs-12">
-      <button class="btn btn-default" data-toggle="modal" data-target="#moalUrlForm">
+    <div class="col-xs-6">
+      <button class="btn btn-default" data-toggle="modal" data-target="#modalUrlForm">
         URL
       </button>
     </div>
@@ -44,40 +40,41 @@
     <li class="active"><a data-toggle="pill" href="#uploadedVids">Uploaded</a></li>
     <li><a data-toggle="pill" href="#onlineVids">Online</a></li>
   </ul>
-
-  <div id="uploadedVids">
-    {{#each getVids}}
-    <div class="panel panel-default">
-      <div class="panel-heading">
-        <div class="row">
-          <div class="col-xs-7">
-            {{#unless this.isUploaded}}
-            <h4 class="list-group-item-heading"><span class="label label-warning">UPLOADING</span></h4>
-            {{else}}
-            <button class="btn btn-success btn-xs js-load-vid btn-block"><span class="glyphicon glyphicon-play"></span></button>
-            {{/unless}}
+  <div class="tab-content">
+    <div id="uploadedVids" class="tab-pane fade in active">
+      {{#each getVids}}
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          <div class="row">
+            <div class="col-xs-7">
+              {{#unless this.isUploaded}}
+              <h4 class="list-group-item-heading"><span class="label label-warning">UPLOADING</span></h4>
+              {{else}}
+              <button class="btn btn-success btn-xs js-load-vid btn-block"><span class="glyphicon glyphicon-play"></span></button>
+              {{/unless}}
+            </div>
+            <div class="col-xs-5 ">
+              <button class="btn btn-danger btn-xs js-remove-vid btn-block"><span class="glyphicon glyphicon-remove"></span></button>
+            </div>
           </div>
-          <div class="col-xs-5 ">
-            <button class="btn btn-danger btn-xs js-remove-vid btn-block"><span class="glyphicon glyphicon-remove"></span></button>
+        </div>
+        <div class="panel-body">
+          <div href="#" class="list-group-item" style="color:black;">
+          {{#unless this.isUploaded}}
+
+            {{> FS.UploadProgressBar bootstrap=true class='progress-bar-info progress-bar-striped active' showPercent=true}}
+          {{/unless}}
+            <h5 class="list-group-item-heading">{{this.name}}</h5>
           </div>
         </div>
       </div>
-      <div class="panel-body">
-        <div href="#" class="list-group-item" style="color:black;">
-        {{#unless this.isUploaded}}
 
-          {{> FS.UploadProgressBar bootstrap=true class='progress-bar-info progress-bar-striped active' showPercent=true}}
-        {{/unless}}
-          <h5 class="list-group-item-heading">{{this.name}}</h5>
-        </div>
-      </div>
+      {{/each}}
     </div>
 
-    {{/each}}
-  </div>
-
-  <div id="onlineVids">
-      {{#each getVids}}
-      {{/each}}
+    <div id="onlineVids" class="tab-pane fade">
+        {{#each getVids}}
+        {{/each}}
+    </div>
   </div>
 </template>

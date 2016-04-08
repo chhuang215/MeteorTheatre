@@ -13,12 +13,13 @@ Meteor.methods({
     }
   },
   'vidToPlay':function(vidId){
-
-    var screen = Screen.findOne({_id:vid.belongToScreen});
-    if(screen){
-      Screen.update({_id: screen._id}, {$set:{currentlyPlaying:vidId}});
+    var vid = Videos.findOne({_id:vidId});
+    if(vid){
+      var screen = Screen.findOne({_id:vid.belongToScreen});
+      if(screen){
+        Screen.update({_id: screen._id}, {$set:{currentlyPlaying:vidId}});
+      }
     }
-
   },
   'addNewScreen':function(ownerId=null){
     Screen.insert({
@@ -38,8 +39,8 @@ Meteor.methods({
 
   "addOnlineVideo":function(screenId, url){
     OnlineVideos.insert({
-      url:url;
-      belongToScreen:screenId;
+      url:url,
+      belongToScreen:screenId
     });
   },
 
