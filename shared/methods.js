@@ -13,12 +13,18 @@ Meteor.methods({
     }
   },
   'vidToPlay':function(vidId){
-    var vid = Videos.findOne({_id:vidId});
+    var vid = Videos.findOne({_id:vidId}) || OnlineVideos.findOne({_id:vidId});
     if(vid){
       var screen = Screen.findOne({_id:vid.belongToScreen});
       if(screen){
         Screen.update({_id: screen._id}, {$set:{currentlyPlaying:vidId}});
       }
+    }
+  },
+  'clearVidToPlay':function(screenId){
+    var screen = Screen.findOne({_id:screenId});
+    if(screen){
+      Screen.update({_id: screen._id}, {$set:{currentlyPlaying:null}});
     }
   },
   'addNewScreen':function(ownerId=null){

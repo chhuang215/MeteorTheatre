@@ -27,8 +27,7 @@ Template.bigscreen.helpers({
     var vidScreen = Screen.findOne({_id:this._id});
     if (vidScreen) {
 
-      var currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying});
-      var currentOnlineVid = OnlineVideos.findOne({_id:vidScreen.currentlyPlaying});
+      var currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying});
       var time = vidScreen.time;
       myvideo = $("#video")[0];
       if(myvideo){
@@ -45,12 +44,11 @@ Template.bigscreen.helpers({
       } // End if
       if(currentVid){
         return currentVid;
-      }else if(currentOnlineVid){
-        return currentOnlineVid;
       }
+
     } // End if
 
-    return {};
+    return {url:''};
   }
 
 });

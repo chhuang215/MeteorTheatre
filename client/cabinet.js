@@ -33,33 +33,61 @@ Template.cabinet.events({
   "click .js-load-vid":function(e){
     Meteor.call('time', 0);
     Meteor.call('play', false);
-    Session.set('time', 0);
-    Session.set('playing', 0);
+    // Session.set('time', 0);
+    // Session.set('playing', 0);
     Meteor.call('vidToPlay', this._id);
   },
   "click .js-remove-vid":function(){
     Meteor.subscribe("videos", this.screenId);
+    Meteor.subscribe("screen");
     var v = Videos.findOne({_id:this._id});
-    var s = Screen.findOne();
+    var s = Screen.findOne({_id:v.belongToScreen});
     if(v){
         var c = confirm('are you sure you want to delete?');
         if(c === true){
-          if(s.currentlyPlaying == v._id){
-            Meteor.call('vidToPlay', "");
-            Meteor.call('time', 0);
-            Meteor.call('play', false);
-            Session.set('time', 0);
-            Session.set('playing', 0);
-          }
+
           v.remove();
+          if(s.currentlyPlaying == v._id){
+            Meteor.call('clearVidToPlay', s._id);
+            Meteor.call('time', s._id,0);
+            Meteor.call('play',s._id, false);
+            // Session.set('time', 0);
+            // Session.set('playing', 0);
+          }
+        }
+    }
+
+  },
+  "click .js-remove-onlinevid":function(){
+    Meteor.subscribe("videos", this.screenId);
+    Meteor.subscribe("screen");
+    var v = OnlineVideos.findOne({_id:this._id});
+    var s = Screen.findOne({_id:v.belongToScreen});
+    if(v){
+        var c = confirm('are you sure you want to delete?');
+        if(c === true){
+
+          Meteor.call("removeOnlineVideo", v._id);
+
+          if(s.currentlyPlaying == v._id){
+
+            Meteor.call('clearVidToPlay', s._id);
+            Meteor.call('time', s._id, 0);
+            Meteor.call('play', s._id, false);
+            // Session.set('time', 0);
+            // Session.set('playing', 0);
+          }
         }
     }
 
   },
 
+
   "submit .js-add-onlinevid":function(e){
     e.preventDefault();
-
+    var url = e.target.videourl.value;
+    //console.log('url ' + url);
+    Meteor.call('addOnlineVideo', this.screenId, url);
     $('#modalUrlForm').modal("toggle");
   }
 

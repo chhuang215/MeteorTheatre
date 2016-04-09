@@ -13,7 +13,7 @@
           <form id="addUrlForm" class="js-add-onlinevid">
             <div class="form-group">
               <label for="videourl" class="control-label">URL</label>
-              <input type="text" class="form-control" id="videourl">
+              <input type="text" class="form-control" id="videourl" name="videourl">
             </div>
             <button type="submit" class="btn btn-primary ">Add</button>
           </form>
@@ -73,7 +73,26 @@
     </div>
 
     <div id="onlineVids" class="tab-pane fade">
-        {{#each getVids}}
+        {{#each getOnlineVids}}
+        <div class="panel panel-default">
+          <div class="panel-heading">
+            <div class="row">
+              <div class="col-xs-7">
+
+                <button class="btn btn-success btn-xs js-load-vid btn-block"><span class="glyphicon glyphicon-play"></span></button>
+
+              </div>
+              <div class="col-xs-5 ">
+                <button class="btn btn-danger btn-xs js-remove-onlinevid btn-block"><span class="glyphicon glyphicon-remove"></span></button>
+              </div>
+            </div>
+          </div>
+          <div class="panel-body">
+            <div class="list-group-item" style="color:black;">
+              <h5 class="list-group-item-heading">{{this.url}}</h5>
+            </div>
+          </div>
+        </div>
         {{/each}}
     </div>
   </div>
