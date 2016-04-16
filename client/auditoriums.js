@@ -24,11 +24,3 @@ Template.auditoriums.events({
     }
   }
 });
-
-Template.auditoriums.onRendered(function(){
-  // this.autorun(function(){
-  //   if(Meteor.userId()){
-  //     Meteor.call("thisUserIsIn", Meteor.userId(), "");
-  //   }
-  // });
-});

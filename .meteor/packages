@@ -33,3 +33,4 @@ standard-minifier-css
 standard-minifier-js
 kadira:flow-router
 kadira:blaze-layout
+react-template-helper
