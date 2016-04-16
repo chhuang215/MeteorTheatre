@@ -51,8 +51,6 @@ Template.cabinet.events({
             Meteor.call('clearVidToPlay', s._id);
             Meteor.call('time', s._id,0);
             Meteor.call('play',s._id, false);
-            // Session.set('time', 0);
-            // Session.set('playing', 0);
           }
         }
     }
@@ -74,8 +72,6 @@ Template.cabinet.events({
             Meteor.call('clearVidToPlay', s._id);
             Meteor.call('time', s._id, 0);
             Meteor.call('play', s._id, false);
-            // Session.set('time', 0);
-            // Session.set('playing', 0);
           }
         }
     }
@@ -86,9 +82,24 @@ Template.cabinet.events({
   "submit .js-add-onlinevid":function(e){
     e.preventDefault();
     var url = e.target.videourl.value;
-    //console.log('url ' + url);
-    Meteor.call('addOnlineVideo', this.screenId, url);
-    $('#modalUrlForm').modal("toggle");
+
+    var f = new FS.File();
+    f.attachData(url, function (error) {
+      if (error) {
+        console.log(error);
+        console.log('can\'t get file data');
+        return;
+      }
+      console.log(f);
+
+
+      e.target.videourl.value = "";
+
+
+    });
+
+      Meteor.call('addOnlineVideo', this.screenId, url);
+        $('#modalUrlForm').modal("toggle");
   }
 
 });

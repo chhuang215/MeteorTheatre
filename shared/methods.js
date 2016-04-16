@@ -27,7 +27,7 @@ Meteor.methods({
       Screen.update({_id: screen._id}, {$set:{currentlyPlaying:null}});
     }
   },
-  'addNewScreen':function(ownerId=null){
+  'addNewScreen':function(ownerId){
     Screen.insert({
       name:"Private",
       playing:false,

@@ -29,7 +29,7 @@ Template.bigscreen.helpers({
 
       var currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying});
       var time = vidScreen.time;
-      myvideo = $("#video")[0];
+      var myvideo = $("#video")[0];
       if(myvideo){
         if(myvideo.currentTime+TIME_OFF_THRESHOLD < time || myvideo.currentTime-TIME_OFF_THRESHOLD >time ){
             myvideo.currentTime = time;

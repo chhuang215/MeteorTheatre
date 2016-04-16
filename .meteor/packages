@@ -9,8 +9,6 @@ mizzao:jquery-ui
 twbs:bootstrap
 fortawesome:fontawesome
 orionjs:bootstrap
-iron:router
-standard-minifiers
 meteor-base
 mobile-experience
 mongo
@@ -31,3 +29,7 @@ cfs:ui
 orionjs:core
 artwells:accounts-guest
 mizzao:user-status
+standard-minifier-css
+standard-minifier-js
+kadira:flow-router
+kadira:blaze-layout
