@@ -36,7 +36,11 @@
           {{#if isCurrentUser}}
             <span class=" viewer-label label label-success">[YOU] {{username}} </span>
           {{else}}
-            <span class=" viewer-label label label-primary"> {{username}} </span>
+            {{#if userIsLoading _id}}
+              <span class=" viewer-label label label-danger"> {{username}} (Need Loading..) </span>
+            {{else}}
+              <span class=" viewer-label label label-primary"> {{username}} </span>
+            {{/if}}
           {{/if}}
 
         {{/each}}

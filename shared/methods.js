@@ -41,6 +41,13 @@ Meteor.methods({
 
     Screen.remove({_id:screenId});
   },
+  "userNeedsToLoad":function(isLoading){
+    var u =  Meteor.users.findOne({_id:this.userId});
+    if(u){
+      Meteor.users.update({_id:u._id}, {$set: {isLoading:isLoading}});
+    }
+
+  },
   // End Screen Methods
 
   "addOnlineVideo":function(screenId, url,name,type){
@@ -83,16 +90,18 @@ Meteor.methods({
   'thisUserIsNotIn':function(userId,screenId){
     if(this.userId == userId){
       var u =  Meteor.users.findOne({_id:userId, isIn:screenId});
-      if(u.isIn){
-        var elem = u.isIn.indexOf(screenId);
-        if(elem != -1){
-          u.isIn.splice(elem,1);
+      if(u){
+        if(u.isIn){
+          var elem = u.isIn.indexOf(screenId);
+          if(elem != -1){
+            u.isIn.splice(elem,1);
+          }
         }
+        else{
+          u.isIn = [];
+        }
+        Meteor.users.update({_id:userId}, {$set: {isIn:[]}});
       }
-      else{
-        u.isIn = [];
-      }
-      Meteor.users.update({_id:userId}, {$set: {isIn:[]}});
     }
   }
 

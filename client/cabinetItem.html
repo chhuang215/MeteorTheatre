@@ -1,5 +1,21 @@
 <template name="cabinetItem">
-  <div class="panel panel-default">
+
+  <div class="modal fade" role="dialog" id="confirmRemoveModal{{this._id}}">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">You sure you want to remove this video?</h4>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-danger js-remove-vid">Remove</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+
+  <div class="panel panel-default" id="panel{{this._id}}">
     <div class="panel-heading">
       <div class="row">
         <div class="col-xs-7">
@@ -10,7 +26,7 @@
           {{/unless}}
         </div>
         <div class="col-xs-5 ">
-          <button class="btn btn-danger btn-xs js-remove-vid btn-block"><span class="glyphicon glyphicon-remove"></span></button>
+          <button class="btn btn-danger btn-xs btn-block js-confirm-remove"><span class="glyphicon glyphicon-remove"></span></button>
         </div>
       </div>
     </div>

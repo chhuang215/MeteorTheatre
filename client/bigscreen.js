@@ -16,6 +16,11 @@ Template.bigscreen.helpers({
       Meteor.subscribe('getViewers', this._id);
       return Meteor.users.find({"status.online":true});
   },
+  'userIsLoading' :function(userId){
+      Meteor.subscribe('getViewers', this._id);
+      var u = Meteor.users.findOne({_id:userId});
+      return u.isLoading;
+  },
   'isCurrentUser' : function(){
 
     if(this._id == Meteor.userId()){
@@ -81,6 +86,17 @@ Template.bigscreen.events({
       Meteor.call('time', screenId, time);
     }
 
+  },
+
+  'canplaythrough #video':function(){
+    if(Meteor.userId){
+      Meteor.call("userNeedsToLoad", false);
+    }
+  },
+  'waiting #video':function(){
+    if(Meteor.userId){
+      Meteor.call("userNeedsToLoad", true);
+    }
   },
   "click .js-play": function(){
     Session.set('playing', 1);
