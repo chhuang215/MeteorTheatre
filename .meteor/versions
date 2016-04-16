@@ -57,6 +57,7 @@ ejson@1.0.10
 email@1.0.11
 fastclick@1.0.10
 fortawesome:fontawesome@4.5.0
+fourseven:scss@3.4.3
 geojson-utils@1.0.7
 hot-code-push@1.0.3
 html-tools@1.0.8
@@ -118,6 +119,7 @@ reactive-var@1.0.8
 reload@1.1.7
 retry@1.0.6
 routepolicy@1.0.9
+seba:minifiers-autoprefixer@1.0.1
 service-configuration@1.0.8
 session@1.1.4
 sha@1.0.6

@@ -4,17 +4,15 @@ Meteor.subscribe("screen");
 var TIME_OFF_THRESHOLD = 3.5;
 var screenId= "";
 Template.bigscreen.helpers({
-  "greeting": function(screenId){
-    var greet = screenId;
-    if(Meteor.userId()){
-      greet += " , " + Meteor.userId();
-    }
 
-    return greet;
-  },
   'viewers': function(){
       Meteor.subscribe('getViewers', this._id);
-      return Meteor.users.find({"status.online":true});
+      var viewerList = Meteor.users.find({"status.online":true});
+      var viewersData = {
+        viewerCount : viewerList.fetch().length,
+        viewerList : viewerList
+      };
+      return viewersData;
   },
   'userIsLoading' :function(userId){
       Meteor.subscribe('getViewers', this._id);
@@ -68,8 +66,6 @@ Template.bigscreen.events({
       if(vidScreen.playing){
         var time = myvid.currentTime;
 
-        Session.set('time', time);
-
         Meteor.call('time', screenId, time);
       }else{
         myvid.pause();
@@ -82,7 +78,7 @@ Template.bigscreen.events({
     var vidScreen = Screen.findOne({_id:screenId});
     if(vidScreen){
       var time = $('#video')[0].currentTime;
-      Session.set('time', time);
+
       Meteor.call('time', screenId, time);
     }
 
@@ -99,24 +95,22 @@ Template.bigscreen.events({
     }
   },
   "click .js-play": function(){
-    Session.set('playing', 1);
     var screenId = Template.currentData()._id;
     Meteor.call("play", screenId,true);
   },
   "play #video":  function(){
     event.preventDefault(event)
-    Session.set('playing', 1);
+
     var screenId = Template.currentData()._id;
     Meteor.call("play", screenId, true);
   },
   "click .js-pause":function(){
-    Session.set('playing', 0);
+
     var screenId = Template.currentData()._id;
     Meteor.call("play", screenId,false);
   },
   "pause #video":function(event){
     event.preventDefault()
-    Session.set('playing', 0);
     var screenId = Template.currentData()._id;
     Meteor.call("play", screenId,false);
   }

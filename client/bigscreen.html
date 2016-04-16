@@ -19,34 +19,37 @@
 
             </video>
             {{/with}}
+
           </div>
 
           <div class="col-xs-12">
             <button class=" btn btn-primary js-play">Play</button>
             <button class="btn btn-warning js-pause">Pause</button>
           </div>
+
         </div>
       </div>
 
-      <div class="col-md-3 col-sm-4">
-        <h3>Viewers:</h3>
-        <div id="viewerDiv">
+      <div class="col-md-3 col-sm-4 col-xs-12">
+        {{#with viewers}}
+          <h3>Viewers: {{viewerCount}}</h3>
+          <div id="viewerDiv">
 
-        {{#each viewers}}
-          {{#if isCurrentUser}}
-            <span class=" viewer-label label label-success">[YOU] {{username}} </span>
-          {{else}}
-            {{#if userIsLoading _id}}
-              <span class=" viewer-label label label-danger"> {{username}} (Need Loading..) </span>
+          {{#each viewerList}}
+            {{#if isCurrentUser}}
+              <span class=" viewer-label label label-success">[YOU] {{username}} </span>
             {{else}}
-              <span class=" viewer-label label label-primary"> {{username}} </span>
+              {{#if userIsLoading _id}}
+                <span class=" viewer-label label label-danger"> {{username}} (Loading..) </span>
+              {{else}}
+                <span class=" viewer-label label label-primary"> {{username}} </span>
+              {{/if}}
             {{/if}}
-          {{/if}}
 
-        {{/each}}
+          {{/each}}
 
-        </div>
-
+          </div>
+        {{/with}}
         {{> cabinet screenId=this._id}}
       </div>
 
