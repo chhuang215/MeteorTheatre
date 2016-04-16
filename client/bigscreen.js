@@ -2,6 +2,7 @@
 Meteor.subscribe("videos");
 Meteor.subscribe("screen");
 var TIME_OFF_THRESHOLD = 3.5;
+var screenId= "";
 Template.bigscreen.helpers({
   "greeting": function(screenId){
     var greet = screenId;
@@ -114,6 +115,7 @@ Template.bigscreen.onCreated(function(){
   this.autorun(function(){
     if(Meteor.userId()){
       if(Template.currentData()){
+        screenId = Template.currentData()._id;
         Meteor.call("thisUserIsIn", Meteor.userId(), Template.currentData()._id);
       }
     }
@@ -126,8 +128,9 @@ Template.bigscreen.onRendered(function() {
 });
 
 Template.bigscreen.onDestroyed(function(){
+
   if(Meteor.userId()){
-    Meteor.call("thisUserIsNotIn", Meteor.userId(), this.data._id);
+    Meteor.call("thisUserIsNotIn", Meteor.userId(), screenId);
 
   }
 });

@@ -7,7 +7,6 @@ FlowRouter.route('/', {
 FlowRouter.route('/:_id', {
     action: function(params) {
         var s = Screen.findOne({_id:params._id});
-        console.log(s);
         BlazeLayout.render("layout", {main: "bigscreen", data: s});
     }
 });

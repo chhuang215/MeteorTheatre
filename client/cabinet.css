@@ -1,3 +1,8 @@
 .modal{
   color:black;
 }
+
+.nav-tabs li {
+    display: table-cell;
+    width: 1%;
+}

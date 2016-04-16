@@ -43,9 +43,12 @@ Meteor.methods({
   },
   // End Screen Methods
 
-  "addOnlineVideo":function(screenId, url){
+  "addOnlineVideo":function(screenId, url,name,type){
+
     OnlineVideos.insert({
       url:url,
+      name:name,
+      type:type,
       belongToScreen:screenId
     });
   },

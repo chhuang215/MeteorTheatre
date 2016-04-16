@@ -30,75 +30,32 @@ Template.cabinet.events({
       })
     }
   },
-  "click .js-load-vid":function(e){
-    Meteor.call('time', 0);
-    Meteor.call('play', false);
-    // Session.set('time', 0);
-    // Session.set('playing', 0);
-    Meteor.call('vidToPlay', this._id);
-  },
-  "click .js-remove-vid":function(){
-    Meteor.subscribe("videos", this.screenId);
-    Meteor.subscribe("screen");
-    var v = Videos.findOne({_id:this._id});
-    var s = Screen.findOne({_id:v.belongToScreen});
-    if(v){
-        var c = confirm('are you sure you want to delete?');
-        if(c === true){
-
-          v.remove();
-          if(s.currentlyPlaying == v._id){
-            Meteor.call('clearVidToPlay', s._id);
-            Meteor.call('time', s._id,0);
-            Meteor.call('play',s._id, false);
-          }
-        }
-    }
-
-  },
-  "click .js-remove-onlinevid":function(){
-    Meteor.subscribe("videos", this.screenId);
-    Meteor.subscribe("screen");
-    var v = OnlineVideos.findOne({_id:this._id});
-    var s = Screen.findOne({_id:v.belongToScreen});
-    if(v){
-        var c = confirm('are you sure you want to delete?');
-        if(c === true){
-
-          Meteor.call("removeOnlineVideo", v._id);
-
-          if(s.currentlyPlaying == v._id){
-
-            Meteor.call('clearVidToPlay', s._id);
-            Meteor.call('time', s._id, 0);
-            Meteor.call('play', s._id, false);
-          }
-        }
-    }
-
-  },
-
-
   "submit .js-add-onlinevid":function(e){
     e.preventDefault();
     var url = e.target.videourl.value;
-
+    var screenId = this.screenId;
+    var name = null, type = null;
     var f = new FS.File();
     f.attachData(url, function (error) {
       if (error) {
         console.log(error);
         console.log('can\'t get file data');
-        return;
+
+      }else{
+        name = f.original.name;
+        type = f.original.type;
+        console.log(name + " " + type);
+
       }
       console.log(f);
 
 
       e.target.videourl.value = "";
 
-
+      Meteor.call('addOnlineVideo', screenId, url,name,type);
     });
 
-      Meteor.call('addOnlineVideo', this.screenId, url);
+
         $('#modalUrlForm').modal("toggle");
   }
 

@@ -12,3 +12,12 @@ video{
   width:100%;
   margin:0 auto;
 }
+
+.viewer-label{
+  font-size: 12px;
+  margin : 0 2px;
+  display: inline-block;
+}
+#viewerDiv{
+  margin:3px;
+}
