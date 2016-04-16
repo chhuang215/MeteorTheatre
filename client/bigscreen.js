@@ -124,6 +124,10 @@ Template.bigscreen.events({
 
 Template.bigscreen.onCreated(function(){
 
+  if(!Meteor.userId()){
+      Meteor.loginVisitor();
+  }
+
   $(window).resize(function() {
     $('.screen').css('height', $(window).height()-80);
   });
