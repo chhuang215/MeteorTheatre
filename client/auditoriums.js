@@ -1,3 +1,6 @@
+import { Meteor } from 'meteor/meteor';
+import { Template } from 'meteor/templating';
+import {Screen} from '../lib/common.js';
 Meteor.subscribe("screen");
 
 Template.auditoriums.helpers({
@@ -22,5 +25,17 @@ Template.auditoriums.events({
         //AccountsGuest.enabled = true;
         Meteor.loginVisitor();
     }
+  },
+
+  'submit .js-change-aud-title':function(e){
+      e.preventDefault();
+      var title = e.target.audtitle.value.trim();
+      e.target.audtitle.value="";
+      if(title){
+        var s = Screen.findOne({_id:this._id});
+        if(s){
+          Meteor.call("updateTitle", s._id, title);
+        }
+      }
   }
 });

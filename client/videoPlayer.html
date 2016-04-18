@@ -1,0 +1,19 @@
+<template name="videoPlayer">
+  <div class="row">
+    <div class="screen col-xs-12">
+      {{#with getCurrentVid}}
+      <video class="embed-responsive-item" src={{this.url}}  preload="auto"  id="video" controls >
+
+      </video>
+      {{/with}}
+
+    </div>
+
+    <div class="col-xs-12">
+      <button class=" btn btn-primary js-play">Play</button>
+      <button class="btn btn-warning js-pause">Pause</button>
+      <button class="btn btn-default">Fullscreen</button>
+    </div>
+
+  </div>
+</template>

@@ -1,22 +1,52 @@
 <template name="auditoriums">
-  
+
   <div class="container" style="margin-top:20px;">
 
 
     <div class="row">
       {{#each getScreens}}
+
+      <!-- Modal -->
+      <div class="modal fade" id="modalChangeTitle{{this._id}}" role="dialog">
+        <div class="modal-dialog">
+
+          <!-- Modal content-->
+          <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal">&times;</button>
+              <h4 class="modal-title">Change {{@index}}'s title</h4>
+            </div>
+            <div class="modal-body">
+              <form class=" form-inline js-change-aud-title">
+                <div class="form-group">
+                  <label for="audtitle" class="control-label">Title: </label>
+                  <input type="text" class="form-control" id="audtitle" name="audtitle">
+                </div>
+                <button type="submit" class="btn btn-primary ">Add</button>
+              </form>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
       <div class="col-xs-12 col-sm-6 col-md-3">
         <div class="panel panel-default">
           <div class="panel-heading">
-            <h3>[{{@index}}]{{this._id}}</h3>
+            <h3 align="center">{{@index}}</h3>
+            <h3 align="center">
+              {{#if this.title}} {{this.title}} {{else}} {{this._id}} {{/if}}
+            </h3>
+            <div class="centerDiv"><button class="btn btn-xs btn-default" data-toggle="modal" data-target="#modalChangeTitle{{this._id}}">Change Title</button></div>
           </div>
           <div class="panel-body">
             <div class="row">
               <div class="col-xs-8">
-                  <a class="btn btn-success js-enter-aud" href="/{{this._id}}"><i class="fa fa-sign-in fa-2x"></i> Enter</a>
+                  <a class="btn btn-success btn-block js-enter-aud" href="/{{this._id}}"><i class="fa fa-sign-in fa-2x"></i> Enter</a>
               </div>
               <div class="col-xs-4">
                   <button class="btn btn-xs btn-danger js-delete-aud">Delete</button>
+
               </div>
             </div>
           </div>

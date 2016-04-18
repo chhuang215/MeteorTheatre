@@ -4,12 +4,14 @@
   "description": "Online theatre\r This project is published at ch-meteortheatre.meteor.com.",
   "main": "index.js",
   "dependencies": {
+    "meteor-node-stubs": "^0.2.3",
     "react": "^15.0.1",
-    "react-dom": "^15.0.1"
+    "react-dom": "^15.0.1",
+    "video.js": "^5.8.8"
   },
   "devDependencies": {},
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "start": "meteor run"
   },
   "repository": {
     "type": "git",

@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+import {Screen, Videos} from '../lib/common.js';
 
 //Films.remove({});
 if (Screen.find().count() === 0) {

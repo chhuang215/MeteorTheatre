@@ -1,4 +1,6 @@
-
+import { Meteor } from 'meteor/meteor';
+import { Template } from 'meteor/templating';
+import {Screen, Videos, OnlineVideos} from '../lib/common.js';
 Template.cabinetItem.helpers({
   "isUploaded":function(uploaded){
     if(uploaded == false){
@@ -48,27 +50,4 @@ Template.cabinetItem.events({
   'click .js-confirm-remove':function(){
     $('#confirmRemoveModal'+this._id).modal('show');
   }
-  // "click .js-remove-onlinevid":function(){
-  //
-  //   Meteor.subscribe("onlinevideos", this.belongToScreen);
-  //   Meteor.subscribe("screen");
-  //   var
-  //   console.log(v + " " +this._id);
-  //   var s = Screen.findOne({_id:this.belongToScreen});
-  //   if(v){
-  //       var c = confirm('are you sure you want to delete?');
-  //       if(c === true){
-  //
-  //         Meteor.call("removeOnlineVideo", v._id);
-  //
-  //         if(s.currentlyPlaying == v._id){
-  //
-  //           Meteor.call('clearVidToPlay', s._id);
-  //           Meteor.call('time', s._id, 0);
-  //           Meteor.call('play', s._id, false);
-  //         }
-  //       }
-  //   }
-  //
-  // }
 });

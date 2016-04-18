@@ -1,3 +1,5 @@
+import { Meteor } from 'meteor/meteor';
+import {Screen, Videos, OnlineVideos} from '../lib/common.js';
 Meteor.publish("screen", function(){
   return Screen.find();
 });

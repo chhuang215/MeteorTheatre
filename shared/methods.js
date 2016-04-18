@@ -1,3 +1,5 @@
+import {Meteor} from 'meteor/meteor';
+import {Screen, Videos, OnlineVideos} from '../lib/common.js';
 Meteor.methods({
   // Screen Methods
   'play':function(screenId,setPlay){
@@ -40,6 +42,10 @@ Meteor.methods({
   "removeScreen":function(screenId){
 
     Screen.remove({_id:screenId});
+  },
+  "updateTitle":function(screenId,title){
+
+    Screen.update({_id:screenId}, {$set: {title:title}});
   },
   "userNeedsToLoad":function(isLoading){
     var u =  Meteor.users.findOne({_id:this.userId});
