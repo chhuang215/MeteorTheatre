@@ -37,5 +37,6 @@ Template.auditoriums.events({
           Meteor.call("updateTitle", s._id, title);
         }
       }
+      $('#modalChangeTitle'+this._id).modal('hide');
   }
 });
