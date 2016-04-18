@@ -1,13 +1,16 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import {Screen, Videos, OnlineVideos} from '../lib/common.js';
-
+import videojs from 'video.js';
 Meteor.subscribe("videos");
 Meteor.subscribe("screen");
 
 var TIME_OFF_THRESHOLD = 3.5;
 
 Template.videoPlayer.helpers({
+  loadCurrentVid(){
+
+  },
   "getCurrentVid": function () {
 
     var vidScreen = Screen.findOne({_id:this._id});
@@ -40,7 +43,7 @@ Template.videoPlayer.helpers({
 });
 
 Template.videoPlayer.events({
-  "timeupdate #video":function(){
+  "timeupdate video":function(){
     var screenId = Template.currentData()._id;
     var vidScreen = Screen.findOne({_id:screenId});
     var myvid = $('#video')[0];
@@ -55,7 +58,7 @@ Template.videoPlayer.events({
     }
 
   },
-  "seeked #video":function(){
+  "seeked video":function(){
     var screenId = Template.currentData()._id;
     var vidScreen = Screen.findOne({_id:screenId});
     if(vidScreen){
@@ -66,12 +69,12 @@ Template.videoPlayer.events({
 
   },
 
-  'canplaythrough #video':function(){
+  'canplaythrough video':function(){
     if(Meteor.userId){
       Meteor.call("userNeedsToLoad", false);
     }
   },
-  'waiting #video':function(){
+  'waiting video':function(){
     if(Meteor.userId){
       Meteor.call("userNeedsToLoad", true);
     }
@@ -80,7 +83,7 @@ Template.videoPlayer.events({
     var screenId = Template.currentData()._id;
     Meteor.call("play", screenId,true);
   },
-  "play #video":  function(){
+  "play video":  function(){
     event.preventDefault(event)
 
     var screenId = Template.currentData()._id;
@@ -91,9 +94,13 @@ Template.videoPlayer.events({
     var screenId = Template.currentData()._id;
     Meteor.call("play", screenId,false);
   },
-  "pause #video":function(event){
+  "pause video":function(event){
     event.preventDefault()
     var screenId = Template.currentData()._id;
     Meteor.call("play", screenId,false);
   }
+});
+
+Template.videoPlayer.onRendered(function(){
+  //videojs('video');
 });
