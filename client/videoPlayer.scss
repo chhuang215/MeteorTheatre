@@ -5,9 +5,13 @@
   background: rgba(255, 255, 255, 0.1);
 }
 
-
-video{
-  height:100%;
+#videoWrapper{
   width:100%;
-  margin:0 auto;
+  height:100%;
+  #video{
+    width:100% !important;
+    height:100% !important;
+    margin:0 auto;
+  }
+
 }

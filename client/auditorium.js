@@ -39,10 +39,7 @@ Template.auditorium.onCreated(function(){
       Meteor.loginVisitor();
   }
 
-  $(window).resize(function() {
-    $('.screen').css('height', $(window).height()-80);
-  });
-
+$('.screen').css('height', $(window).height()-80);
   this.autorun(function(){
     if(Meteor.userId()){
       if(Template.currentData()){
@@ -53,10 +50,6 @@ Template.auditorium.onCreated(function(){
   });
 });
 
-Template.auditorium.onRendered(function() {
-
-  $('.screen').css('height', $(window).height()-80);
-});
 
 Template.auditorium.onDestroyed(function(){
 

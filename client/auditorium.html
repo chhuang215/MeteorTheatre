@@ -23,7 +23,7 @@
 
           {{#each viewerList}}
             {{#if isCurrentUser}}
-              <span class=" viewer-label label label-success">[YOU] {{username}} </span>
+              <span class=" viewer-label label label-success">[YOU] {{username}} {{#if userIsLoading _id}} <span class="label label-danger">(Loading..)</span> {{/if}} </span>
             {{else}}
               <span class=" viewer-label label label-primary"> {{username}} {{#if userIsLoading _id}} <span class="label label-danger">(Loading..)</span> {{/if}} </span>
             {{/if}}

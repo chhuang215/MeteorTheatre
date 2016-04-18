@@ -7,63 +7,75 @@ Meteor.subscribe("videos");
 Meteor.subscribe("screen");
 
 var TIME_OFF_THRESHOLD = 3.5;
+var vPlayer = null;
 
 Template.videoPlayer.helpers({
-  loadCurrentVid(){
-
-  },
-  "getCurrentVid": function () {
-
+  getCurrentVid(){
     var vidScreen = Screen.findOne({_id:this._id});
     if (vidScreen) {
-
-      var currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying});
-      var time = vidScreen.time;
-      var myvideo = $("#video")[0];
-      if(myvideo){
-        if(myvideo.currentTime+TIME_OFF_THRESHOLD < time || myvideo.currentTime-TIME_OFF_THRESHOLD >time ){
-            myvideo.currentTime = time;
-        }
-
-        if(vidScreen.playing == true){
-          myvideo.play();
-        }
-        else{
-          myvideo.pause();
-        }
-      } // End if
-      if(currentVid){
-        return currentVid;
-      }
-
-    } // End if
-
+       var currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying});
+       if(currentVid){
+         return currentVid;
+       }
+    }
     return {url:''};
-  }
+  },
+  loadCurrentVid(url){
 
-});
+    var tmpl = Template.instance();
+    var vidScreen = Screen.findOne({currentlyPlaying:this._id});
+
+    if(tmpl.view.isRendered && vidScreen){
+      let time = vidScreen.time;
+
+
+      if(vPlayer){
+        if(vPlayer.currentSrc() != url){
+          vPlayer.reset();
+          vPlayer.src(url);
+        }
+
+        let currTime = vPlayer.currentTime();
+        if(currTime+TIME_OFF_THRESHOLD < time || currTime-TIME_OFF_THRESHOLD >time ){
+            vPlayer.currentTime(time);
+        }
+
+        if(vidScreen.playing == true && vPlayer.paused()){
+          vPlayer.play();
+        }
+        else if(vidScreen.playing == false){
+          vPlayer.pause();
+        }
+      }
+    }
+  },
+ });
 
 Template.videoPlayer.events({
   "timeupdate video":function(){
-    var screenId = Template.currentData()._id;
+    var screenId = this._id;
     var vidScreen = Screen.findOne({_id:screenId});
-    var myvid = $('#video')[0];
-    if(!myvid.seeking && vidScreen){
-      if(vidScreen.playing){
-        var time = myvid.currentTime;
 
+  //  var myvid = $('#video')[0];
+    if(vidScreen && !vPlayer.seeking()){
+
+      if(vidScreen.playing){
+        let time = vPlayer.currentTime();
         Meteor.call('time', screenId, time);
-      }else{
-        myvid.pause();
       }
+      else if(!vidScreen.playing){
+
+        vPlayer.pause();
+      }
+
     }
 
   },
   "seeked video":function(){
-    var screenId = Template.currentData()._id;
+    var screenId = this._id;
     var vidScreen = Screen.findOne({_id:screenId});
     if(vidScreen){
-      var time = $('#video')[0].currentTime;
+      let time = vPlayer.currentTime();
 
       Meteor.call('time', screenId, time);
     }
@@ -75,33 +87,49 @@ Template.videoPlayer.events({
       Meteor.call("userNeedsToLoad", false);
     }
   },
-  'waiting video':function(){
+  'loadstart video, waiting video':function(){
     if(Meteor.userId){
       Meteor.call("userNeedsToLoad", true);
     }
   },
   "click .js-play": function(){
-    var screenId = Template.currentData()._id;
+    var screenId = this._id;
     Meteor.call("play", screenId,true);
   },
   "play video":  function(){
     event.preventDefault(event)
 
-    var screenId = Template.currentData()._id;
+    var screenId = this._id;
     Meteor.call("play", screenId, true);
   },
   "click .js-pause":function(){
 
-    var screenId = Template.currentData()._id;
+    var screenId = this._id;
     Meteor.call("play", screenId,false);
   },
   "pause video":function(event){
     event.preventDefault()
-    var screenId = Template.currentData()._id;
+    var screenId = this._id;
     Meteor.call("play", screenId,false);
   }
 });
 
+
+Template.videoPlayer.onCreated(function(){
+
+  $(window).resize(function() {
+    $('.screen').css('height', $(window).height()-80);
+  });
+
+});
+
 Template.videoPlayer.onRendered(function(){
-  //videojs('video');
+  $('.screen').css('height', $(window).height()-80);
+  vPlayer = videojs('video', { preload:'auto'});
+});
+
+Template.videoPlayer.onDestroyed(function(){
+
+  var v = videojs('video');
+  v.dispose();
 });
