@@ -2,6 +2,7 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import {Screen, Videos, OnlineVideos} from '../lib/common.js';
 import videojs from 'video.js';
+import 'video.js/dist/video-js.css';
 Meteor.subscribe("videos");
 Meteor.subscribe("screen");
 
