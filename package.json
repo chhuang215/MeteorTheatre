@@ -3,18 +3,22 @@
   "version": "1.0.0",
   "description": "Online theatre\r This project is published at ch-meteortheatre.meteor.com.",
   "main": "index.js",
+  "dependencies": {
+    "react": "^15.0.1",
+    "react-dom": "^15.0.1"
+  },
+  "devDependencies": {},
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://chhuang215@bitbucket.org/chhuang215/meteor-theatre.git"
+    "url": "git+https://github.com/gemhuang21519992/MeteorTheatre.git"
   },
   "author": "",
   "license": "ISC",
-  "homepage": "https://bitbucket.org/chhuang215/meteor-theatre#readme",
-  "dependencies": {
-    "react": "^15.0.1",
-    "react-dom": "^15.0.1"
-  }
+  "bugs": {
+    "url": "https://github.com/gemhuang21519992/MeteorTheatre/issues"
+  },
+  "homepage": "https://github.com/gemhuang21519992/MeteorTheatre#readme"
 }
