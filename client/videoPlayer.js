@@ -43,11 +43,12 @@ Template.videoPlayer.helpers({
           if(vPlayer.paused()){
               vPlayer.play();
           }
-
+          $(".vjs-big-play-button").hide();
           disableCertainControls();
         }
         else if((!vidScreen.playing && (vPlayer.readyState() >= 2) )|| vPlayer.ended ){
           vPlayer.pause();
+          $(".vjs-big-play-button").show();
           enableCertainControls();
         }
       }
@@ -69,6 +70,7 @@ Template.videoPlayer.events({
       else if(!vidScreen.playing){
 
         vPlayer.pause();
+
       }
 
     }
@@ -84,17 +86,18 @@ Template.videoPlayer.events({
     }
 
   },
-  'ended video':function(e){
-    vPlayer.bigPlayButton.show();
+  'loadstart video, waiting video':function(){
+    if(Meteor.userId){
+      Meteor.call("userNeedsToLoad", true);
+    }
+    $('.vjs-loading-spinner').show();
+  },
+  'canplay video':function(){
+    $('.vjs-loading-spinner').hide();
   },
   'canplaythrough video':function(){
     if(Meteor.userId){
       Meteor.call("userNeedsToLoad", false);
-    }
-  },
-  'loadstart video, waiting video':function(){
-    if(Meteor.userId){
-      Meteor.call("userNeedsToLoad", true);
     }
   },
   "click .js-play, click .vjs-control-bar .vjs-paused, click .vjs-big-play-button": function(){
@@ -131,7 +134,7 @@ Template.videoPlayer.onRendered(function(){
       //Disable playing video when click on 'Play' on controlbar
       this.controlBar.playToggle.off('click', this.controlBar.playToggle.handleClick);
       this.bigPlayButton.off('click', this.bigPlayButton.handleClick);
-      console.log(this);
+      //console.log(this);
   });
 
     //videojs.MediaTechController.prototype.onClick = function() {};
