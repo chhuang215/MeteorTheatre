@@ -7,7 +7,7 @@ aldeed:tabular@1.2.0
 allow-deny@1.0.4
 anti:i18n@0.4.3
 artwells:accounts-guest@0.1.13
-autoupdate@1.2.8
+autoupdate@1.2.9
 babel-compiler@6.6.4
 babel-runtime@0.1.8
 base64@1.0.8
@@ -45,7 +45,7 @@ coffeescript@1.0.17
 cosmos:browserify@0.5.1
 dburles:collection-helpers@1.0.4
 ddp@1.2.5
-ddp-client@1.2.5
+ddp-client@1.2.6
 ddp-common@1.2.5
 ddp-rate-limiter@1.0.4
 ddp-server@1.2.6
@@ -80,7 +80,7 @@ meteor-platform@1.2.6
 meteorhacks:inject-initial@1.0.4
 minifier-css@1.1.11
 minifier-js@1.1.11
-minimongo@1.0.14
+minimongo@1.0.15
 mizzao:build-fetcher@0.2.0
 mizzao:jquery-ui@1.11.4
 mizzao:timesync@0.3.4
