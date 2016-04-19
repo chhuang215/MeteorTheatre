@@ -8,7 +8,7 @@
         </div>
         <div class="modal-footer">
 
-          <button type="button" class="btn btn-danger js-remove-vid">Remove</button>
+          <button type="button" class="btn btn-danger btn-disable-when-playing js-remove-vid">Remove</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
       </div><!-- /.modal-content -->
@@ -22,16 +22,16 @@
           {{#unless isUploaded this.isUploaded}}
           <h4 class="list-group-item-heading"><span class="label label-warning">UPLOADING</span></h4>
           {{else}}
-          <button class="btn btn-success btn-xs js-load-vid btn-block"><span class="glyphicon glyphicon-play"></span></button>
+          <button class="btn btn-success btn-xs js-load-vid btn-block btn-disable-when-playing"><span class="glyphicon glyphicon-play"></span></button>
           {{/unless}}
         </div>
         <div class="col-xs-5 ">
-          <button class="btn btn-danger btn-xs btn-block js-confirm-remove"><span class="glyphicon glyphicon-remove"></span></button>
+          <button class="btn btn-danger btn-xs btn-block js-confirm-remove btn-disable-when-playing"><span class="glyphicon glyphicon-remove"></span></button>
         </div>
       </div>
     </div>
     <div class="panel-body">
-      <div href="#" class="list-group-item" style="color:black;">
+      <div class="list-group-item" style="color:black;">
       {{#unless isUploaded this.isUploaded}}
 
         {{> FS.UploadProgressBar bootstrap=true class='progress-bar-info progress-bar-striped active' showPercent=true}}

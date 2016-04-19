@@ -2,7 +2,6 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import {Screen, Videos, OnlineVideos} from '../lib/common.js';
 import videojs from 'video.js';
-import 'video.js/dist/video-js.css';
 Meteor.subscribe("videos");
 Meteor.subscribe("screen");
 
@@ -40,11 +39,16 @@ Template.videoPlayer.helpers({
             vPlayer.currentTime(time);
         }
 
-        if(vidScreen.playing == true && vPlayer.paused()){
-          vPlayer.play();
+        if(vidScreen.playing && !vPlayer.ended()){
+          if(vPlayer.paused()){
+              vPlayer.play();
+          }
+
+          disableCertainControls();
         }
-        else if(vidScreen.playing == false){
+        else if((!vidScreen.playing && (vPlayer.readyState() >= 2) )|| vPlayer.ended ){
           vPlayer.pause();
+          enableCertainControls();
         }
       }
     }
@@ -56,7 +60,6 @@ Template.videoPlayer.events({
     var screenId = this._id;
     var vidScreen = Screen.findOne({_id:screenId});
 
-  //  var myvid = $('#video')[0];
     if(vidScreen && !vPlayer.seeking()){
 
       if(vidScreen.playing){
@@ -81,7 +84,9 @@ Template.videoPlayer.events({
     }
 
   },
-
+  'ended video':function(e){
+    vPlayer.bigPlayButton.show();
+  },
   'canplaythrough video':function(){
     if(Meteor.userId){
       Meteor.call("userNeedsToLoad", false);
@@ -92,26 +97,22 @@ Template.videoPlayer.events({
       Meteor.call("userNeedsToLoad", true);
     }
   },
-  "click .js-play": function(){
+  "click .js-play, click .vjs-control-bar .vjs-paused, click .vjs-big-play-button": function(){
+
     var screenId = this._id;
+    if(vPlayer.ended()){
+        Meteor.call('time', screenId, 0);
+    }
+
     Meteor.call("play", screenId,true);
   },
-  "play video":  function(){
-    event.preventDefault(event)
 
-    var screenId = this._id;
-    Meteor.call("play", screenId, true);
-  },
-  "click .js-pause":function(){
+  "click .js-pause, click .vjs-control-bar .vjs-playing":function(e){
 
     var screenId = this._id;
     Meteor.call("play", screenId,false);
   },
-  "pause video":function(event){
-    event.preventDefault()
-    var screenId = this._id;
-    Meteor.call("play", screenId,false);
-  }
+
 });
 
 
@@ -125,7 +126,16 @@ Template.videoPlayer.onCreated(function(){
 
 Template.videoPlayer.onRendered(function(){
   $('.screen').css('height', $(window).height()-80);
-  vPlayer = videojs('video', { preload:'auto'});
+
+  vPlayer = videojs('video', { preload:'auto'}, function(){
+      //Disable playing video when click on 'Play' on controlbar
+      this.controlBar.playToggle.off('click', this.controlBar.playToggle.handleClick);
+      this.bigPlayButton.off('click', this.bigPlayButton.handleClick);
+      console.log(this);
+  });
+
+    //videojs.MediaTechController.prototype.onClick = function() {};
+
 });
 
 Template.videoPlayer.onDestroyed(function(){
@@ -133,3 +143,11 @@ Template.videoPlayer.onDestroyed(function(){
   var v = videojs('video');
   v.dispose();
 });
+
+function disableCertainControls(){
+  $('.btn-disable-when-playing').prop( "disabled", true );
+}
+
+function enableCertainControls(){
+  $('.btn-disable-when-playing').prop( "disabled", false );
+}

@@ -10,7 +10,7 @@ Template.auditorium.helpers({
 
   'viewers': function(){
       Meteor.subscribe('getViewers', this._id);
-      var viewerList = Meteor.users.find({"status.online":true});
+      var viewerList = Meteor.users.find({"status.online":true}, {sort:{username:1}});
       var viewersData = {
         viewerCount : viewerList.fetch().length,
         viewerList : viewerList
