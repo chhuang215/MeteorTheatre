@@ -1,11 +1,39 @@
 
 @import "{}/node_modules/video.js/src/css/video-js.scss";
 
+.video-js:hover .vjs-big-play-button {
+  outline: 0;
+  border-color: $primary-foreground-color;
+
+  @include background-color-with-alpha($primary-background-color, $primary-background-transparency);
+  @include transition(all 0s);
+}
+
+
+.video-js .vjs-big-play-button:hover {
+  outline: 0;
+  border-color: $primary-foreground-color;
+
+  @include background-color-with-alpha($secondary-background-color, $secondary-background-transparency);
+
+  @include transition(all 0s);
+}
 
 .video-js {
-  font-size: 15.5px;
 
+  font-size: 14.6px;
 
+  .vjs-big-play-button{
+    font-size:4em;
+    line-height: 1.9em;
+    height: 2em;
+    width: 3.5em;
+  }
+}
+
+.vjs-big-play-centered .vjs-big-play-button{
+  margin-top: -1em;
+    margin-left: -1.75em;
 }
 
 .vjs-tech{
@@ -26,7 +54,7 @@
 }
 
 #video{
-  width:100% !important;
-  height:100% !important;
+  width:100%;
+  height:100% ;
   margin:0 auto;
 }

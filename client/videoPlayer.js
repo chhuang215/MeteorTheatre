@@ -5,7 +5,7 @@ import videojs from 'video.js';
 Meteor.subscribe("videos");
 Meteor.subscribe("screen");
 
-var TIME_OFF_THRESHOLD = 3.5;
+const TIME_OFF_THRESHOLD = 3.5;
 var vPlayer = null;
 
 Template.videoPlayer.helpers({
@@ -58,8 +58,8 @@ Template.videoPlayer.helpers({
 
 Template.videoPlayer.events({
   "timeupdate video":function(){
-    var screenId = this._id;
-    var vidScreen = Screen.findOne({_id:screenId});
+    const screenId = this._id;
+    const vidScreen = Screen.findOne({_id:screenId});
 
     if(vidScreen && !vPlayer.seeking()){
 
@@ -77,8 +77,8 @@ Template.videoPlayer.events({
 
   },
   "seeked video":function(){
-    var screenId = this._id;
-    var vidScreen = Screen.findOne({_id:screenId});
+    const screenId = this._id;
+    const vidScreen = Screen.findOne({_id:screenId});
     if(vidScreen){
       let time = vPlayer.currentTime();
 
@@ -100,9 +100,9 @@ Template.videoPlayer.events({
       Meteor.call("userNeedsToLoad", false);
     }
   },
-  "click .js-play, click .vjs-control-bar .vjs-paused, click .vjs-big-play-button": function(){
+  "click .js-play, click .vjs-control-bar .vjs-paused, touchstart .vjs-control-bar .vjs-paused, click .vjs-big-play-button, touchstart .vjs-big-play-button": function(e){
 
-    var screenId = this._id;
+    let screenId = this._id;
     if(vPlayer.ended()){
         Meteor.call('time', screenId, 0);
     }
@@ -110,9 +110,8 @@ Template.videoPlayer.events({
     Meteor.call("play", screenId,true);
   },
 
-  "click .js-pause, click .vjs-control-bar .vjs-playing":function(e){
-
-    var screenId = this._id;
+  "click .js-pause, click .vjs-control-bar .vjs-playing, touchstart .vjs-control-bar .vjs-playing":function(e){
+    let screenId = this._id;
     Meteor.call("play", screenId,false);
   },
 
@@ -134,17 +133,16 @@ Template.videoPlayer.onRendered(function(){
       //Disable playing video when click on 'Play' on controlbar
       this.controlBar.playToggle.off('click', this.controlBar.playToggle.handleClick);
       this.bigPlayButton.off('click', this.bigPlayButton.handleClick);
-      //console.log(this);
+      this.bigPlayButton.off('tap', this.bigPlayButton.handleClick);
+    
   });
-
-    //videojs.MediaTechController.prototype.onClick = function() {};
-
 });
 
 Template.videoPlayer.onDestroyed(function(){
 
-  var v = videojs('video');
+  const v = videojs('video');
   v.dispose();
+
 });
 
 function disableCertainControls(){
