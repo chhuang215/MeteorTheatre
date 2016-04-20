@@ -1,0 +1,23 @@
+<template name="viewers">
+  {{#with viewers}}
+    <h3>Viewers: {{viewerCount}}</h3>
+    <div id="viewerDiv">
+
+    {{#each viewerList}}
+        {{> viewerLabel this  isLoading=userIsLoading}}
+
+    {{/each}}
+
+    </div>
+  {{/with}}
+</template>
+
+<template name="viewerLabel">
+
+  {{#if isCurrentUser}}
+    <span class=" viewer-label label label-success"> [You] {{username}} {{#if isLoading}} <span class="label label-danger">Loading..</span> {{/if}} </span>
+  {{else}}
+    <span class=" viewer-label label label-primary"> {{username}} {{#if isLoading}} <span class="label label-danger">Loading..</span> {{/if}} </span>
+  {{/if}}
+
+</template>

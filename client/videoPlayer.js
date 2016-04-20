@@ -43,13 +43,11 @@ Template.videoPlayer.helpers({
           if(vPlayer.paused()){
               vPlayer.play();
           }
-          $(".vjs-big-play-button").hide();
-          disableCertainControls();
+
         }
         else if((!vidScreen.playing && (vPlayer.readyState() >= 2) )|| vPlayer.ended ){
           vPlayer.pause();
-          $(".vjs-big-play-button").show();
-          enableCertainControls();
+
         }
       }
     }
@@ -58,13 +56,13 @@ Template.videoPlayer.helpers({
 
 Template.videoPlayer.events({
   "timeupdate video":function(){
+    let time = vPlayer.currentTime();
     const screenId = this._id;
     const vidScreen = Screen.findOne({_id:screenId});
 
     if(vidScreen && !vPlayer.seeking()){
 
       if(vidScreen.playing){
-        let time = vPlayer.currentTime();
         Meteor.call('time', screenId, time);
       }
       else if(!vidScreen.playing){
@@ -114,6 +112,14 @@ Template.videoPlayer.events({
     let screenId = this._id;
     Meteor.call("play", screenId,false);
   },
+  "pause video":function(e){
+    $(".vjs-big-play-button").show();
+    certainControlsWhilePlaying(false);
+  },
+  "play video":function(e){
+    $(".vjs-big-play-button").hide();
+    certainControlsWhilePlaying(true);
+  }
 
 });
 
@@ -121,20 +127,20 @@ Template.videoPlayer.events({
 Template.videoPlayer.onCreated(function(){
 
   $(window).resize(function() {
-    $('.screen').css('height', $(window).height()-80);
+    $('.screen').css('height', $(window).height()-85);
   });
 
 });
 
 Template.videoPlayer.onRendered(function(){
-  $('.screen').css('height', $(window).height()-80);
+  $('.screen').css('height', $(window).height()-85);
 
   vPlayer = videojs('video', { preload:'auto'}, function(){
       //Disable playing video when click on 'Play' on controlbar
       this.controlBar.playToggle.off('click', this.controlBar.playToggle.handleClick);
       this.bigPlayButton.off('click', this.bigPlayButton.handleClick);
       this.bigPlayButton.off('tap', this.bigPlayButton.handleClick);
-    
+
   });
 });
 
@@ -145,10 +151,6 @@ Template.videoPlayer.onDestroyed(function(){
 
 });
 
-function disableCertainControls(){
-  $('.btn-disable-when-playing').prop( "disabled", true );
-}
-
-function enableCertainControls(){
-  $('.btn-disable-when-playing').prop( "disabled", false );
+function certainControlsWhilePlaying(disabled){
+  $('.btn-disable-when-playing').prop( "disabled", disabled );
 }

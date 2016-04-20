@@ -7,6 +7,18 @@ Template.cabinetItem.helpers({
       return false;
     }
     return true;
+  },
+  isCurrentlyPlaying(){
+    Meteor.subscribe("screen");
+
+    var s = Screen.findOne({_id:this.belongToScreen});
+
+    if(s.currentlyPlaying == this._id){
+    //  console.log('this vid is playing');
+      return true;
+    }
+    //console.log('this vid is not playing');
+    return false;
   }
 });
 

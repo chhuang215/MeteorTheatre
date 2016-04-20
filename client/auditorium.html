@@ -17,21 +17,8 @@
       </div>
 
       <div class="col-md-3 col-sm-4 col-xs-12">
-        {{#with viewers}}
-          <h3>Viewers: {{viewerCount}}</h3>
-          <div id="viewerDiv">
+        {{> viewers this}}
 
-          {{#each viewerList}}
-            {{#if isCurrentUser}}
-              <span class=" viewer-label label label-success">[YOU] {{username}} {{#if userIsLoading _id}} <span class="label label-danger">Loading..</span> {{/if}} </span>
-            {{else}}
-              <span class=" viewer-label label label-primary"> {{username}} {{#if userIsLoading _id}} <span class="label label-danger">Loading..</span> {{/if}} </span>
-            {{/if}}
-
-          {{/each}}
-
-          </div>
-        {{/with}}
         {{> cabinet this}}
       </div>
 

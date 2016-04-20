@@ -73,7 +73,7 @@ Meteor.methods({
   "enableGuestLogin":function(){
     AccountsGuest.enabled = true;
   },
-  'thisUserIsIn':function(userId,screenId){
+  'addViewerToScreen':function(userId,screenId){
     if(this.userId == userId){
         var u =  Meteor.users.findOne({_id:userId});
         if(u.isIn){
@@ -93,7 +93,7 @@ Meteor.methods({
 
   },
 
-  'thisUserIsNotIn':function(userId,screenId){
+  'removeViewerFromScreen':function(userId,screenId){
     if(this.userId == userId){
       var u =  Meteor.users.findOne({_id:userId, isIn:screenId});
       if(u){
@@ -106,7 +106,7 @@ Meteor.methods({
         else{
           u.isIn = [];
         }
-        Meteor.users.update({_id:userId}, {$set: {isIn:[]}});
+        Meteor.users.update({_id:userId}, {$set: u});
       }
     }
   }

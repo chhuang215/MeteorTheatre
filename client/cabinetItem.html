@@ -22,7 +22,14 @@
           {{#unless isUploaded this.isUploaded}}
           <h4 class="list-group-item-heading"><span class="label label-warning">UPLOADING</span></h4>
           {{else}}
-          <button class="btn btn-success btn-xs js-load-vid btn-block btn-disable-when-playing"><span class="glyphicon glyphicon-play"></span></button>
+              {{#if isCurrentlyPlaying}}
+                  <div class="btn btn-success btn-xs btn-block disabled">
+                    Currently Playing
+                  </div>
+              {{else}}
+                  <button class="btn btn-success btn-xs js-load-vid btn-block btn-disable-when-playing"><span class="glyphicon glyphicon-play"></span></button>
+              {{/if}}
+
           {{/unless}}
         </div>
         <div class="col-xs-5 ">
