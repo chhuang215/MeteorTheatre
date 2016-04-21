@@ -22,7 +22,7 @@ Template.auditorium.onCreated(function(){
   var self = this;
   this.autorun(function(){
     if(Meteor.userId()){
-      console.log( FlowRouter.getParam('_id'));
+
       screenId = FlowRouter.getParam('_id');
       Session.set('sid',screenId);
 

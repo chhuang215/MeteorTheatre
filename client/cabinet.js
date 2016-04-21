@@ -6,8 +6,6 @@ import {OnlineVideos} from '../lib/collections/OnlineVideos.js';
 
 Template.cabinet.helpers({
   "getVids": function(){
-    //console.log(this._id + " " + this.screenId);
-
 
     var vids = Videos.find();
     if(vids){
@@ -51,10 +49,10 @@ Template.cabinet.events({
       }else{
         name = f.original.name;
         type = f.original.type;
-        console.log(name + " " + type);
+        //console.log(name + " " + type);
 
       }
-      console.log(f);
+    //  console.log(f);
 
 
       e.target.videourl.value = "";
@@ -66,14 +64,4 @@ Template.cabinet.events({
         $('#modalUrlForm').modal("toggle");
   }
 
-});
-
-
-Template.cabinet.onCreated(function(){
-  this.autorun(function(){
-    // Meteor.subscribe("videos", this._id);
-    // Meteor.subscribe("onlinevideos", this._id);
-    console.log('VIDS');
-    console.log(Videos.find().fetch());
-  });
 });

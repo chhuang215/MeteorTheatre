@@ -8,8 +8,6 @@ FlowRouter.route('/', {
 
 FlowRouter.route('/:_id', {
     action: function(params) {
-        //var s = Screen.findOne({_id:params._id});
-        console.log('i will hit here at least');
         BlazeLayout.render("layout", {main: "auditorium"});
     }
 });
