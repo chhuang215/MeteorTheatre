@@ -1,9 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import {Screen, Videos, OnlineVideos} from '../lib/common.js';
+//import {Screen, Videos, OnlineVideos} from '../lib/common.js';
+
+import {Screen} from '../lib/collections/Screen.js';
+import {Videos} from '../lib/collections/Videos.js';
+import {OnlineVideos} from '../lib/collections/OnlineVideos.js';
+
 import videojs from 'video.js';
-Meteor.subscribe("videos");
-Meteor.subscribe("screen");
 
 const TIME_OFF_THRESHOLD = 3.5;
 var vPlayer = null;
@@ -12,14 +15,20 @@ Template.videoPlayer.helpers({
   getCurrentVid(){
     var vidScreen = Screen.findOne({_id:this._id});
     if (vidScreen) {
-       var currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying});
-       if(currentVid){
-         return currentVid;
-       }
+       var currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying}) || {};
+       return currentVid;
     }
-    return {url:''};
+    return {};
   },
   loadCurrentVid(url){
+    if(!url){
+      $(".vjs-big-play-button").hide();
+      vPlayer.controls(false);
+      return;
+    }
+    if (!vPlayer.controls()){
+      vPlayer.controls(true);
+    }
 
     var tmpl = Template.instance();
     var vidScreen = Screen.findOne({currentlyPlaying:this._id});
@@ -42,12 +51,13 @@ Template.videoPlayer.helpers({
         if(vidScreen.playing && !vPlayer.ended()){
           if(vPlayer.paused()){
               vPlayer.play();
+              $(".vjs-big-play-button").hide();
           }
 
         }
         else if((!vidScreen.playing && (vPlayer.readyState() >= 2) )|| vPlayer.ended ){
           vPlayer.pause();
-
+          $(".vjs-big-play-button").show();
         }
       }
     }
@@ -68,7 +78,7 @@ Template.videoPlayer.events({
       else if(!vidScreen.playing){
 
         vPlayer.pause();
-
+        $(".vjs-big-play-button").show();
       }
 
     }
@@ -112,13 +122,8 @@ Template.videoPlayer.events({
     let screenId = this._id;
     Meteor.call("play", screenId,false);
   },
-  "pause video":function(e){
-    $(".vjs-big-play-button").show();
-    certainControlsWhilePlaying(false);
-  },
-  "play video":function(e){
-    $(".vjs-big-play-button").hide();
-    certainControlsWhilePlaying(true);
+  "click .js-reload":function(e){
+      vPlayer.load();
   }
 
 });
@@ -150,7 +155,3 @@ Template.videoPlayer.onDestroyed(function(){
   v.dispose();
 
 });
-
-function certainControlsWhilePlaying(disabled){
-  $('.btn-disable-when-playing').prop( "disabled", disabled );
-}

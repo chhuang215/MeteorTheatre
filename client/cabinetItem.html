@@ -8,7 +8,7 @@
         </div>
         <div class="modal-footer">
 
-          <button type="button" class="btn btn-danger btn-disable-when-playing js-remove-vid">Remove</button>
+          <button type="button" class="btn btn-danger js-remove-vid" disabled={{videoIsPlayingDisableButton}}>Remove</button>
           <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
         </div>
       </div><!-- /.modal-content -->
@@ -27,13 +27,13 @@
                     Currently Playing
                   </div>
               {{else}}
-                  <button class="btn btn-success btn-xs js-load-vid btn-block btn-disable-when-playing"><span class="glyphicon glyphicon-play"></span></button>
+                  <button class="btn btn-success btn-xs js-load-vid btn-block" disabled={{videoIsPlayingDisableButton}}><span class="glyphicon glyphicon-play"></span></button>
               {{/if}}
 
           {{/unless}}
         </div>
         <div class="col-xs-5 ">
-          <button class="btn btn-danger btn-xs btn-block js-confirm-remove btn-disable-when-playing"><span class="glyphicon glyphicon-remove"></span></button>
+          <button class="btn btn-danger btn-xs btn-block js-confirm-remove " disabled={{videoIsPlayingDisableButton}}><span class="glyphicon glyphicon-remove"></span></button>
         </div>
       </div>
     </div>

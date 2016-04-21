@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import {Screen} from '../lib/common.js';
-Meteor.subscribe("screen");
+// import {Screen} from '../lib/common.js';
+import {Screen} from '../lib/collections/Screen.js';
+
 
 Template.auditoriums.helpers({
   'getScreens': function(){
@@ -39,4 +40,8 @@ Template.auditoriums.events({
       }
       $('#modalChangeTitle'+this._id).modal('hide');
   }
+});
+
+Template.auditoriums.onCreated(function(){
+  this.subscribe("screen");
 });

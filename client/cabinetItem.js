@@ -1,6 +1,12 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import {Screen, Videos, OnlineVideos} from '../lib/common.js';
+// import {Screen, Videos, OnlineVideos} from '../lib/common.js';
+import {Screen} from '../lib/collections/Screen.js';
+import {Videos} from '../lib/collections/Videos.js';
+import {OnlineVideos} from '../lib/collections/OnlineVideos.js';
+
+//Meteor.subscribe("screen");
+
 Template.cabinetItem.helpers({
   "isUploaded":function(uploaded){
     if(uploaded == false){
@@ -9,7 +15,7 @@ Template.cabinetItem.helpers({
     return true;
   },
   isCurrentlyPlaying(){
-    Meteor.subscribe("screen");
+
 
     var s = Screen.findOne({_id:this.belongToScreen});
 
@@ -19,7 +25,16 @@ Template.cabinetItem.helpers({
     }
     //console.log('this vid is not playing');
     return false;
+  },
+  videoIsPlayingDisableButton(){
+    var s = Screen.findOne({_id:this.belongToScreen});
+
+    if(s.playing){
+      return true;
+    }
+    return false;
   }
+
 });
 
 Template.cabinetItem.events({
@@ -31,9 +46,8 @@ Template.cabinetItem.events({
   },
   "click .js-remove-vid":function(e){
 
-    Meteor.subscribe("videos", this.belongToScreen);
-    Meteor.subscribe("onlinevideos", this.belongToScreen);
-    Meteor.subscribe("screen");
+
+
     var v = Videos.findOne({_id:this._id});
     var ov = OnlineVideos.findOne({_id:this._id});
     var s = Screen.findOne({_id:this.belongToScreen});
@@ -62,4 +76,9 @@ Template.cabinetItem.events({
   'click .js-confirm-remove':function(){
     $('#confirmRemoveModal'+this._id).modal('show');
   }
+});
+
+Template.cabinetItem.onCreated(function(){
+  Meteor.subscribe("videos", this.belongToScreen);
+  Meteor.subscribe("onlinevideos", this.belongToScreen);
 });

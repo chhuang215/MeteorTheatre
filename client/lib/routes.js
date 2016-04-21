@@ -1,5 +1,4 @@
-
-import {Screen} from '../../lib/common.js';
+import {Screen} from '../../lib/collections/Screen.js';
 
 FlowRouter.route('/', {
     action: function(params) {
@@ -9,7 +8,8 @@ FlowRouter.route('/', {
 
 FlowRouter.route('/:_id', {
     action: function(params) {
-        var s = Screen.findOne({_id:params._id});
-        BlazeLayout.render("layout", {main: "auditorium", data: s});
+        //var s = Screen.findOne({_id:params._id});
+        console.log('i will hit here at least');
+        BlazeLayout.render("layout", {main: "auditorium"});
     }
 });

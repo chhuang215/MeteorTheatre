@@ -1,7 +1,9 @@
 import { Meteor } from 'meteor/meteor';
-import {Screen, Videos} from '../lib/common.js';
+//import {Screen, Videos} from '../lib/common.js';
 
-//Films.remove({});
+import {Screen} from '../lib/collections/Screen.js';
+import {Videos} from '../lib/collections/Videos.js';
+
 if (Screen.find().count() === 0) {
   Screen.insert({
     name:"Public",

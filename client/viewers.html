@@ -1,10 +1,12 @@
 <template name="viewers">
+
   {{#with viewers}}
     <h3>Viewers: {{viewerCount}}</h3>
     <div id="viewerDiv">
 
     {{#each viewerList}}
-        {{> viewerLabel this  isLoading=userIsLoading}}
+
+        {{> viewerLabel }}
 
     {{/each}}
 

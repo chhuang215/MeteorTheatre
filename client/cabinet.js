@@ -1,18 +1,21 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import {Videos, OnlineVideos} from '../lib/common.js';
+// import {Videos, OnlineVideos} from '../lib/common.js';
+import {Videos} from '../lib/collections/Videos.js';
+import {OnlineVideos} from '../lib/collections/OnlineVideos.js';
 
 Template.cabinet.helpers({
   "getVids": function(){
     //console.log(this._id + " " + this.screenId);
-    Meteor.subscribe("videos", this._id);
+
+
     var vids = Videos.find();
     if(vids){
       return vids;
     }
   },
   "getOnlineVids":function(){
-      Meteor.subscribe("onlinevideos", this._id);
+
       var vids = OnlineVideos.find();
       if(vids){
         return vids;
@@ -63,4 +66,14 @@ Template.cabinet.events({
         $('#modalUrlForm').modal("toggle");
   }
 
+});
+
+
+Template.cabinet.onCreated(function(){
+  this.autorun(function(){
+    // Meteor.subscribe("videos", this._id);
+    // Meteor.subscribe("onlinevideos", this._id);
+    console.log('VIDS');
+    console.log(Videos.find().fetch());
+  });
 });
