@@ -34,13 +34,6 @@ Template.auditorium.onCreated(function(){
   });
 });
 
-Template.auditorium.onRendered(function(){
-
-  // if(!){
-  //   FlowRouter.go('/');
-  // }
-});
-
 Template.auditorium.onDestroyed(function(){
 
   if(Meteor.userId()){
