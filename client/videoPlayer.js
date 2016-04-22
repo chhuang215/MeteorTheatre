@@ -13,17 +13,22 @@ var vPlayer = null;
 Template.videoPlayer.helpers({
 
   loadCurrentVid(){
-    let tmpl = Template.instance();
-    if(!tmpl.view.isRendered && !vPlayer) return;
-
     const vidScreen = Screen.findOne({_id:this._id});
     if (!vidScreen) return;
 
     const currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying});
     if(!currentVid) return;
 
-    const url = currentVid.url();
+    let tmpl = Template.instance();
+    if(!tmpl.view.isRendered && !vPlayer) return;
 
+    try{
+      var url = currentVid.url();
+    }catch(err){
+      url = currentVid.url;
+    }
+
+    console.log(url);
     let time = vidScreen.time;
 
     if(!url){
