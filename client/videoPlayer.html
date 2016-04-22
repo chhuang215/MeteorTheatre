@@ -2,18 +2,10 @@
   <div class="row">
     <div class="screen col-xs-12">
 
-
-      <div id="videoWrapper" >
-        {{#with getCurrentVid}}
-
-
-          {{loadCurrentVid this.url}}
-
-          <video class="video-js vjs-default-skin vjs-big-play-centered" id="video" controls hidden={{!this.url}}>  </video>
-        {{/with}}
-
-      </div>
-
+        {{loadCurrentVid}}
+        <div class="embed-responsive embed-responsive-16by9">
+              <video class="embed-responsive-item video-js vjs-default-skin vjs-big-play-centered" id="video" controls>  </video>
+        </div>
 
     </div>
 

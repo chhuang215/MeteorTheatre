@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-// import {Videos, OnlineVideos} from '../lib/common.js';
-import {Videos} from '../lib/collections/Videos.js';
-import {OnlineVideos} from '../lib/collections/OnlineVideos.js';
+import {Videos} from '/lib/collections/Videos.js';
+import {OnlineVideos} from '/lib/collections/OnlineVideos.js';
 
 Template.cabinet.helpers({
   "getVids": function(){
@@ -53,7 +52,6 @@ Template.cabinet.events({
 
       }
     //  console.log(f);
-
 
       e.target.videourl.value = "";
 

@@ -1,6 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-import {Screen} from '../lib/collections/Screen';
+import {Screen} from '/lib/collections/Screen';
 
 var screenId = null;
 

@@ -1,7 +1,6 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-// import {Screen} from '../lib/common.js';
-import {Screen} from '../lib/collections/Screen.js';
+import {Screen} from '/lib/collections/Screen.js';
 
 
 Template.auditoriums.helpers({

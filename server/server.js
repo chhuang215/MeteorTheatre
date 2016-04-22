@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 
-import {Screen} from '../lib/collections/Screen.js';
-import {Videos} from '../lib/collections/Videos.js';
+import {Screen} from '/lib/collections/Screen.js';
+import {Videos} from '/lib/collections/Videos.js';
 
 if (Screen.find().count() === 0) {
   Screen.insert({
@@ -11,6 +11,7 @@ if (Screen.find().count() === 0) {
     currentlyPlaying:null,
     isPublic:true,
     owner:null,
+    createdOn: new Date()
   });
 }
 

@@ -1,12 +1,11 @@
 import { Meteor } from 'meteor/meteor';
 
-import {Screen} from '../../lib/collections/Screen.js';
-import {Videos} from '../../lib/collections/Videos.js';
-import {OnlineVideos} from '../../lib/collections/OnlineVideos.js';
+import {Screen} from '/lib/collections/Screen.js';
+import {Videos} from '/lib/collections/Videos.js';
+import {OnlineVideos} from '/lib/collections/OnlineVideos.js';
 
 Meteor.publish("screen", function(id){
   if(id){
-
       return Screen.find({_id:id});
   }
 

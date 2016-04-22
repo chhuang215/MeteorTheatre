@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-// import {Screen, Videos, OnlineVideos} from '../lib/common.js';
-import {Screen} from '../lib/collections/Screen.js';
-import {Videos} from '../lib/collections/Videos.js';
-import {OnlineVideos} from '../lib/collections/OnlineVideos.js';
+
+import {Screen} from '/lib/collections/Screen.js';
+import {Videos} from '/lib/collections/Videos.js';
+import {OnlineVideos} from '/lib/collections/OnlineVideos.js';
 
 //Meteor.subscribe("screen");
 

@@ -2,7 +2,6 @@
 
   {{#with viewers}}
     <h3>Viewers: {{viewerCount}}</h3>
-    {{test}}
     <div id="viewerDiv">
 
     {{#each viewerList}}
@@ -22,7 +21,7 @@
     <span class=" viewer-label label {{labelStyle}}">
 
       {{#if isLoading}}
-        <span class="fa-container label label-danger">    <i class="fa fa-refresh fa-spin"></i></span>
+        <span class="fa-spinner-container label label-danger"> <i class="fa fa-refresh fa-spin"></i></span>
       {{/if}}
 
       {{name}}

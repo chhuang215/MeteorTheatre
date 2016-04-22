@@ -1,9 +1,9 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 
-import {Screen} from '../lib/collections/Screen.js';
-import {Videos} from '../lib/collections/Videos.js';
-import {OnlineVideos} from '../lib/collections/OnlineVideos.js';
+import {Screen} from '/lib/collections/Screen.js';
+import {Videos} from '/lib/collections/Videos.js';
+import {OnlineVideos} from '/lib/collections/OnlineVideos.js';
 
 import videojs from 'video.js';
 
@@ -11,57 +11,53 @@ const TIME_OFF_THRESHOLD = 3.5;
 var vPlayer = null;
 
 Template.videoPlayer.helpers({
-  getCurrentVid(){
-    var vidScreen = Screen.findOne({_id:this._id});
-    if (vidScreen) {
-       var currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying}) || {};
-       return currentVid;
+
+  loadCurrentVid(){
+    let tmpl = Template.instance();
+    if(!tmpl.view.isRendered && !vPlayer) return;
+
+    const vidScreen = Screen.findOne({_id:this._id});
+    if (!vidScreen) return;
+
+    const currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying});
+    if(!currentVid) return;
+
+    const url = currentVid.url();
+
+    let time = vidScreen.time;
+
+    if(!url){
+      $(".vjs-big-play-button").hide();
+      vPlayer.controls(false);
+      return;
     }
-    return {};
-  },
-  loadCurrentVid(url){
+    else if(vPlayer.currentSrc() != url){
+      vPlayer.reset();
+      vPlayer.src(url);
+    }
 
+    if (!vPlayer.controls()){
+      vPlayer.controls(true);
+    }
 
-    var tmpl = Template.instance();
-    var vidScreen = Screen.findOne({currentlyPlaying:this._id});
+    let currTime = vPlayer.currentTime();
+    if(currTime+TIME_OFF_THRESHOLD < time || currTime-TIME_OFF_THRESHOLD >time ){
+        vPlayer.currentTime(time);
+    }
 
-    if(tmpl.view.isRendered && vidScreen){
-      let time = vidScreen.time;
-
-
-      if(vPlayer){
-        if(!url){
+    if(vidScreen.playing && !vPlayer.ended()){
+      if(vPlayer.paused()){
+          vPlayer.play();
           $(".vjs-big-play-button").hide();
-          vPlayer.controls(false);
-          return;
-        }
-        else if(vPlayer.currentSrc() != url){
-          vPlayer.reset();
-          vPlayer.src(url);
-        }
-
-        if (!vPlayer.controls()){
-          vPlayer.controls(true);
-        }
-
-        let currTime = vPlayer.currentTime();
-        if(currTime+TIME_OFF_THRESHOLD < time || currTime-TIME_OFF_THRESHOLD >time ){
-            vPlayer.currentTime(time);
-        }
-
-        if(vidScreen.playing && !vPlayer.ended()){
-          if(vPlayer.paused()){
-              vPlayer.play();
-              $(".vjs-big-play-button").hide();
-          }
-
-        }
-        else if((!vidScreen.playing && (vPlayer.readyState() >= 2) )|| vPlayer.ended ){
-          vPlayer.pause();
-          $(".vjs-big-play-button").show();
-        }
       }
+
     }
+    else if((!vidScreen.playing && (vPlayer.readyState() >= 2) )|| vPlayer.ended ){
+      vPlayer.pause();
+      $(".vjs-big-play-button").show();
+    }
+
+
   },
  });
 
@@ -88,10 +84,8 @@ Template.videoPlayer.events({
   "seeked video":function(){
     const screenId = this._id;
     const vidScreen = Screen.findOne({_id:screenId});
-    if(vidScreen){
-      let time = vPlayer.currentTime();
-
-      Meteor.call('time', screenId, time);
+    if(vidScreen && !vidScreen.playing){
+      Meteor.call('time', screenId, vPlayer.currentTime());
     }
 
   },
@@ -139,13 +133,16 @@ Template.videoPlayer.events({
 Template.videoPlayer.onCreated(function(){
 
   $(window).resize(function() {
-    $('.screen').css('height', $(window).height()-85);
+    let winHeight = $(window).height();
+    let vidHeight = $('video').height();
+  //  if(winHeight > vidHeight)
+    //  $('.screen').css('max-height', $(window).height()-85);
   });
 
 });
 
 Template.videoPlayer.onRendered(function(){
-  $('.screen').css('height', $(window).height()-85);
+//  $('.screen').css('max-height', $(window).height()-85);
 
   vPlayer = videojs('video', { preload:'auto'}, function(){
       //Disable playing video when click on 'Play' on controlbar
@@ -157,9 +154,7 @@ Template.videoPlayer.onRendered(function(){
 });
 
 Template.videoPlayer.onDestroyed(function(){
-
   if(vPlayer){
     vPlayer.dispose();
   }
-
 });
