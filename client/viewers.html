@@ -2,6 +2,7 @@
 
   {{#with viewers}}
     <h3>Viewers: {{viewerCount}}</h3>
+    {{test}}
     <div id="viewerDiv">
 
     {{#each viewerList}}
@@ -16,10 +17,28 @@
 
 <template name="viewerLabel">
 
-  {{#if isCurrentUser}}
-    <span class=" viewer-label label label-success"> [You] {{username}} {{#if isLoading}} <span class="label label-danger">Loading..</span> {{/if}} </span>
-  {{else}}
-    <span class=" viewer-label label label-primary"> {{username}} {{#if isLoading}} <span class="label label-danger">Loading..</span> {{/if}} </span>
-  {{/if}}
+  {{#with viewer}}
+
+    <span class=" viewer-label label {{labelStyle}}">
+
+
+      <!-- <span class="label label-danger"></span> -->
+      {{#if isLoading}}
+        <span class="fa-container label label-danger">    <i class="fa fa-refresh fa-spin"></i></span>
+      {{/if}}
+
+      {{name}}
+
+      {{#if isPlaying}}
+
+        <span class="badge"><i class="fa fa-play" aria-hidden="true"></i></span>
+      {{else}}
+
+        <span class="badge"><i class="fa fa-pause" aria-hidden="true"></i></span>
+      {{/if}}
+
+    </span>
+
+  {{/with}}
 
 </template>

@@ -2,13 +2,12 @@ import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
 import {Screen} from '../lib/collections/Screen';
 
-var screenId= "";
+var screenId = null;
 
 Template.auditorium.helpers({
   getScreen(){
-    let sid = Session.get('sid');
-    var s = Screen.findOne({_id:sid}) || {};
-
+    Session.get('screen');
+    var s = Screen.findOne({_id:screenId}) || {};
     return s;
 
   }
@@ -22,9 +21,8 @@ Template.auditorium.onCreated(function(){
   var self = this;
   this.autorun(function(){
     if(Meteor.userId()){
-
+      Session.set('screen', 1);
       screenId = FlowRouter.getParam('_id');
-      Session.set('sid',screenId);
 
       self.subscribe("screen",screenId);
       self.subscribe("videos", screenId);
@@ -36,13 +34,16 @@ Template.auditorium.onCreated(function(){
   });
 });
 
+Template.auditorium.onRendered(function(){
+
+  // if(!){
+  //   FlowRouter.go('/');
+  // }
+});
 
 Template.auditorium.onDestroyed(function(){
 
   if(Meteor.userId()){
-
-    Meteor.call("removeViewerFromScreen", Meteor.userId(), Session.get('sid'));
-    Session.set('sid', null)
-
+    Meteor.call("removeViewerFromScreen", Meteor.userId(), screenId);
   }
 });

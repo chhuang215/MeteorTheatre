@@ -1,6 +1,5 @@
 import { Meteor } from 'meteor/meteor';
 import { Template } from 'meteor/templating';
-//import {Screen, Videos, OnlineVideos} from '../lib/common.js';
 
 import {Screen} from '../lib/collections/Screen.js';
 import {Videos} from '../lib/collections/Videos.js';
@@ -21,14 +20,7 @@ Template.videoPlayer.helpers({
     return {};
   },
   loadCurrentVid(url){
-    if(!url){
-      $(".vjs-big-play-button").hide();
-      vPlayer.controls(false);
-      return;
-    }
-    if (!vPlayer.controls()){
-      vPlayer.controls(true);
-    }
+
 
     var tmpl = Template.instance();
     var vidScreen = Screen.findOne({currentlyPlaying:this._id});
@@ -38,9 +30,18 @@ Template.videoPlayer.helpers({
 
 
       if(vPlayer){
-        if(vPlayer.currentSrc() != url){
+        if(!url){
+          $(".vjs-big-play-button").hide();
+          vPlayer.controls(false);
+          return;
+        }
+        else if(vPlayer.currentSrc() != url){
           vPlayer.reset();
           vPlayer.src(url);
+        }
+
+        if (!vPlayer.controls()){
+          vPlayer.controls(true);
         }
 
         let currTime = vPlayer.currentTime();
@@ -96,7 +97,7 @@ Template.videoPlayer.events({
   },
   'loadstart video, waiting video':function(){
     if(Meteor.userId){
-      Meteor.call("userNeedsToLoad", true);
+      Meteor.call("userNeedsToLoad", this._id, true);
     }
     $('.vjs-loading-spinner').show();
   },
@@ -105,12 +106,12 @@ Template.videoPlayer.events({
   },
   'canplaythrough video':function(){
     if(Meteor.userId){
-      Meteor.call("userNeedsToLoad", false);
+      Meteor.call("userNeedsToLoad", this._id, false);
     }
   },
   "click .js-play, click .vjs-control-bar .vjs-paused, touchstart .vjs-control-bar .vjs-paused, click .vjs-big-play-button, touchstart .vjs-big-play-button": function(e){
 
-    let screenId = this._id;
+    const screenId = this._id;
     if(vPlayer.ended()){
         Meteor.call('time', screenId, 0);
     }
@@ -119,11 +120,17 @@ Template.videoPlayer.events({
   },
 
   "click .js-pause, click .vjs-control-bar .vjs-playing, touchstart .vjs-control-bar .vjs-playing":function(e){
-    let screenId = this._id;
-    Meteor.call("play", screenId,false);
+
+    Meteor.call("play", this._id,false);
   },
   "click .js-reload":function(e){
       vPlayer.load();
+  },
+  "play video":function(e){
+    Meteor.call("userVideoIsPlaying", this._id, true);
+  },
+  "pause video":function(e){
+    Meteor.call("userVideoIsPlaying", this._id, false);
   }
 
 });
@@ -151,7 +158,8 @@ Template.videoPlayer.onRendered(function(){
 
 Template.videoPlayer.onDestroyed(function(){
 
-  const v = videojs('video');
-  v.dispose();
+  if(vPlayer){
+    vPlayer.dispose();
+  }
 
 });

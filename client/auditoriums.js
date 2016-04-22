@@ -17,8 +17,18 @@ Template.auditoriums.events({
   "click .js-create-aud": function(){
     Meteor.call("addNewScreen");
   },
-  "click .js-delete-aud":function(){
-    Meteor.call("removeScreen", this._id);
+  "click .js-delete-aud":function(e){
+
+    Meteor.call("removeScreen", this._id, function(err, res){
+        if(err){
+          console.log(err);
+        }else{
+
+        }
+
+    });
+    e.currentTarget.disabled = true;
+    e.currentTarget.value = "Deleting...";
   },
   'click .js-enter-aud':function(){
     if(!Meteor.userId()){

@@ -8,19 +8,37 @@ Template.viewers.helpers({
       var viewerList = Meteor.users.find({"status.online":true}, {sort:{username:1}});
       var viewersData = {
         viewerCount : viewerList.fetch().length,
-        viewerList : viewerList
+        viewerList : viewerList,
       };
       return viewersData;
   }
 });
 
 Template.viewerLabel.helpers({
-  'isCurrentUser' : function(){
+  'viewer':function(){
+
+    const sid = FlowRouter.getParam('_id');
+
+    let viewerDisplay = {
+        labelStyle:'label-primary',
+        name: this.username,
+    };
 
     if(this._id == Meteor.userId()){
-      return true;
+      viewerDisplay.labelStyle = 'label-success';
+      viewerDisplay.name = '[YOU] ' + viewerDisplay.name;
     }
-    return false;
-  }
 
+    let inAudStat = this.inAuditorium.find(audStat => audStat.screenId == sid);
+    viewerDisplay.isLoading = inAudStat.isLoading;
+    viewerDisplay.isPlaying = inAudStat.isPlaying;
+
+
+    return viewerDisplay;
+  }
+});
+
+Template.viewerLabel.onRendered(function(){
+  // this.screenId = FlowRouter.getParam('_id');
+  // console.log(this.screenId);
 });
