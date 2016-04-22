@@ -28,7 +28,6 @@ Template.videoPlayer.helpers({
       url = currentVid.url;
     }
 
-    console.log(url);
     let time = vidScreen.time;
 
     if(!url){
