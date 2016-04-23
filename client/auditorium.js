@@ -26,6 +26,7 @@ Template.auditorium.onCreated(function(){
 
       self.subscribe("screen",screenId);
       self.subscribe("videos", screenId);
+      self.subscribe("backendlessvideos", screenId);
       self.subscribe("onlinevideos", screenId);
       self.subscribe('getViewers', screenId);
       Meteor.call("addViewerToScreen", Meteor.userId(), screenId);

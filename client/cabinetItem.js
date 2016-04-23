@@ -4,7 +4,7 @@ import { Template } from 'meteor/templating';
 import {Screen} from '/lib/collections/Screen.js';
 import {Videos} from '/lib/collections/Videos.js';
 import {OnlineVideos} from '/lib/collections/OnlineVideos.js';
-
+import Backendless, {Files} from 'backendless';
 //Meteor.subscribe("screen");
 
 Template.cabinetItem.helpers({
@@ -46,8 +46,6 @@ Template.cabinetItem.events({
   },
   "click .js-remove-vid":function(e){
 
-
-
     var v = Videos.findOne({_id:this._id});
     var ov = OnlineVideos.findOne({_id:this._id});
     var s = Screen.findOne({_id:this.belongToScreen});
@@ -62,6 +60,20 @@ Template.cabinetItem.events({
           else{
             vidId = ov._id;
             Meteor.call("removeOnlineVideo", vidId);
+
+            // Check if file exists on backendless server
+            Backendless.Files.exists(ov.url, new Backendless.Async(
+              function(){
+                // Remove file from server if the file exists
+                Backendless.Files.remove(ov.url, new Backendless.Async(function(){
+                    console.log('CH: '+ov.name+' removed');
+                }));
+              },
+
+              function(err){
+                 console.log( "CH: error - " + err.message );
+              }
+            ));
           }
 
           if(s.currentlyPlaying == vidId){

@@ -27,30 +27,12 @@
 <br/>
 
   <ul class="nav nav-tabs nav-justified">
-      <li class="active"><a data-toggle="tab" href="#uploadedVids">Uploaded</a></li>
-      <li><a data-toggle="tab" href="#onlineVids">Online</a></li>
+      <li class="active"><a data-toggle="tab" href="#onlineVids">Online</a></li>
+      <li ><a data-toggle="tab" href="#uploadedVids">Uploaded</a></li>
   </ul>
 
   <div class="tab-content">
-    <div id="uploadedVids" class="tab-pane fade in active">
-      <div class="row">
-        <div class="col-xs-12">
-          <label class="btn btn-info btn-block" for="vid-file-select">
-            <input id="vid-file-select" type="file" class="js-add-vid" accept="video/*,audio/*" style="display:none;" >
-            Upload <span class="glyphicon glyphicon-upload"></span>
-          </label>
-        </div>
-        <div class="col-xs-12">
-          {{#each getVids}}
-          {{>cabinetItem}}
-          {{/each}}
-        </div>
-      </div>
-
-
-    </div>
-
-    <div id="onlineVids" class="tab-pane fade">
+    <div id="onlineVids" class="tab-pane fade in active">
       <div class="row">
 
 
@@ -59,6 +41,10 @@
             <button class="btn btn-info btn-block" data-toggle="modal" data-target="#modalUrlForm">
               URL <span class="glyphicon glyphicon-link"></span>
             </button>
+            <label class="btn btn-info btn-block" for="vid-file-select-test">
+              <input id="vid-file-select-test" type="file" class="js-add-backendlessvid" accept="video/*,audio/*" style="display:none;" >
+              Upload to backendless (Beta) <span class="glyphicon glyphicon-upload"></span>
+            </label>
 
         </div>
         <div class="col-xs-12">
@@ -69,5 +55,27 @@
       </div>
 
     </div>
+
+    <div id="uploadedVids" class="tab-pane fade ">
+      <div class="row">
+        <div class="col-xs-12">
+          <label class="btn btn-info btn-block" for="vid-file-select">
+            <input id="vid-file-select" type="file" class="js-add-vid" accept="video/*,audio/*" style="display:none;" >
+            Upload <span class="glyphicon glyphicon-upload"></span>
+          </label>
+
+        </div>
+        <br/>
+        <div class="col-xs-12">
+          {{#each getVids}}
+          {{>cabinetItem}}
+          {{/each}}
+        </div>
+      </div>
+
+
+    </div>
+
+
   </div>
 </template>
