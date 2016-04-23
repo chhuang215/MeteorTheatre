@@ -16,7 +16,6 @@ Template.cabinetItem.helpers({
   },
   isCurrentlyPlaying(){
 
-
     var s = Screen.findOne({_id:this.belongToScreen});
 
     if(s.currentlyPlaying == this._id){
@@ -27,9 +26,11 @@ Template.cabinetItem.helpers({
     return false;
   },
   videoIsPlayingDisableButton(){
-    var s = Screen.findOne({_id:this.belongToScreen});
+    const screenId = this.belongToScreen;
+    var s = Screen.findOne({_id:screenId});
+    const u = Meteor.users.findOne({_id:Meteor.userId()});
 
-    if(s.playing){
+    if(s && u && s.playing && u.inAuditorium.find(audStat => audStat.screenId == screenId).isPlaying){
       return true;
     }
     return false;

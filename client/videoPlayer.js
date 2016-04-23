@@ -7,7 +7,7 @@ import {OnlineVideos} from '/lib/collections/OnlineVideos.js';
 
 import videojs from 'video.js';
 
-const TIME_OFF_THRESHOLD = 3.5;
+const TIME_OFF_THRESHOLD = 3.6;
 var vPlayer = null;
 
 Template.videoPlayer.helpers({
@@ -16,11 +16,16 @@ Template.videoPlayer.helpers({
     const vidScreen = Screen.findOne({_id:this._id});
     if (!vidScreen) return;
 
-    const currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying});
-    if(!currentVid) return;
-
     let tmpl = Template.instance();
     if(!tmpl.view.isRendered && !vPlayer) return;
+
+    const currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying});
+    if(!currentVid) {
+      $(".vjs-big-play-button").hide();
+      vPlayer.controls(false);
+      vPlayer.reset();
+      return;
+    }
 
     try{
       var url = currentVid.url();
@@ -33,6 +38,7 @@ Template.videoPlayer.helpers({
     if(!url){
       $(".vjs-big-play-button").hide();
       vPlayer.controls(false);
+      vPlayer.reset();
       return;
     }
     else if(vPlayer.currentSrc() != url){
@@ -67,23 +73,36 @@ Template.videoPlayer.helpers({
 
 Template.videoPlayer.events({
   "timeupdate video":function(){
-    let time = vPlayer.currentTime();
+    if(vPlayer.seeking()) return;
     const screenId = this._id;
-    const vidScreen = Screen.findOne({_id:screenId});
+    let time = vPlayer.currentTime();
 
-    if(vidScreen && !vPlayer.seeking()){
-
-      if(vidScreen.playing){
+    Meteor.call("isPlaying", screenId, function(error, playing){
+      if(error){ console.log("error", error);}
+      if(playing){
         Meteor.call('time', screenId, time);
+        return;
       }
-      else if(!vidScreen.playing){
+      vPlayer.pause();
+      $(".vjs-big-play-button").show();
 
-        vPlayer.pause();
-        $(".vjs-big-play-button").show();
-      }
-
-    }
-
+    });
+  //  const vidScreen = Screen.findOne({_id:screenId});
+  //
+  //   if(vidScreen && !vPlayer.seeking()){
+  //
+  //     if(!vidScreen.playing){
+  //
+  //       vPlayer.pause();
+  //       $(".vjs-big-play-button").show();
+  //       return;
+  //     }
+  //
+  //     Meteor.call('time', screenId, time);
+  //
+  //
+  //   }
+  //
   },
   "seeked video":function(){
     const screenId = this._id;
