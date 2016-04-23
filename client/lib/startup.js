@@ -1,8 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import {FlowRouter} from 'meteor/kadira:flow-router';
 import {TimeSync} from 'meteor/mizzao:timesync';
-
-import {Screen} from '/lib/collections/Screen.js';
+import {AccountsGuest} from 'meteor/artwells:accounts-guest';
 
 TimeSync.loggingEnabled = false;
 

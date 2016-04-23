@@ -1,7 +1,8 @@
 import { Meteor } from 'meteor/meteor';
+import { UserStatus } from 'meteor/mizzao:user-status';
 
-import {Screen} from '/lib/collections/Screen.js';
-import {Videos} from '/lib/collections/Videos.js';
+import { Screen } from '/lib/collections/Screen.js';
+import { Videos } from '/lib/collections/Videos.js';
 
 if (Screen.find().count() === 0) {
   Screen.insert({
