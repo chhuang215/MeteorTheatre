@@ -17,7 +17,7 @@ Template.videoPlayer.helpers({
     if (!vidScreen) return;
 
     let tmpl = Template.instance();
-    if(!tmpl.view.isRendered && !vPlayer) return;
+    if(!tmpl.view.isRendered || !vPlayer) return;
 
     const currentVid = Videos.findOne({_id:vidScreen.currentlyPlaying}) || OnlineVideos.findOne({_id:vidScreen.currentlyPlaying});
     if(!currentVid) {
