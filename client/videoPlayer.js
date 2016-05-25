@@ -27,6 +27,7 @@ Template.videoPlayer.helpers({
       return;
     }
 
+    // Get video url
     try{
       var url = currentVid.url();
     }catch(err){
@@ -66,8 +67,6 @@ Template.videoPlayer.helpers({
       vPlayer.pause();
       $(".vjs-big-play-button").show();
     }
-
-
   },
  });
 
